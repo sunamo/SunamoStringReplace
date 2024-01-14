@@ -3,12 +3,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.1.7.1</Version>
-	  <Description>Method for replacing inside strings</Description>
+    <Version>24.1.10.1</Version>
+    <Description>Method for replacing inside strings</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoCollectionsGeneric" Version="24.1.5.1" />
-    <PackageReference Include="SunamoRegex" Version="24.1.5.1" />
-    <PackageReference Include="SunamoStringData" Version="24.1.9.1" />
+    <PackageReference Include="SunamoCollectionsGeneric" Version="24.1.10.1" />
+    <PackageReference Include="SunamoRegex" Version="24.1.10.1" />
+    <PackageReference Include="SunamoStringData" Version="24.1.11.1" />
   </ItemGroup>
 </Project>
