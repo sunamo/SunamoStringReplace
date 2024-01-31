@@ -1,5 +1,3 @@
-using SunamoStringSplit;
-
 namespace SunamoStringReplace;
 
 public class SHReplace : SHData
@@ -14,7 +12,7 @@ public class SHReplace : SHData
     /// <returns></returns>
     public static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
     {
-        text = SH.FromSpace160To32(text);
+        text = SHSH.FromSpace160To32(text);
 
         if (alsoHtml)
         {
@@ -94,7 +92,7 @@ public class SHReplace : SHData
 
     public static string ReplaceFromEnd(string s, string zaCo, string co)
     {
-        List<int> occ = SH.ReturnOccurencesOfString(s, co);
+        List<int> occ = SHSH.ReturnOccurencesOfString(s, co);
         for (int i = occ.Count - 1; i >= 0; i--)
         {
             s = ReplaceByIndex(s, zaCo, occ[i], co.Length);
@@ -301,7 +299,7 @@ public class SHReplace : SHData
 
         if (removeEndingPairCharsWhenDontHaveStarting)
         {
-            vr = SH.RemoveEndingPairCharsWhenDontHaveStarting(vr, AllStrings.lcub, AllStrings.rcub);
+            vr = SHSH.RemoveEndingPairCharsWhenDontHaveStarting(vr, AllStrings.lcub, AllStrings.rcub);
         }
 
         return vr;
@@ -335,7 +333,7 @@ public class SHReplace : SHData
 
     public static string ReplaceAllExceptPrefixed(string t, string to, string from, string fromCannotBePrefixed)
     {
-        var occ = SH.ReturnOccurencesOfString(t, from);
+        var occ = SHSH.ReturnOccurencesOfString(t, from);
         for (int i = occ.Count - 1; i >= 0; i--)
         {
             var item = occ[i];
@@ -416,21 +414,7 @@ public class SHReplace : SHData
         return vstup;
     }
 
-    public static string ReplaceOnce(string input, string what, string zaco)
-    {
 
-        if (what == "")
-        {
-            return input;
-        }
-
-        int pos = input.IndexOf(what);
-        if (pos == -1)
-        {
-            return input;
-        }
-        return input.Substring(0, pos) + zaco + input.Substring(pos + what.Length);
-    }
 
     public static string Replace(string t, string what, string forWhat)
     {
@@ -684,11 +668,11 @@ public class SHReplace : SHData
                 porovnat zaměněné a originál - namapovat co je mezi nimi
                 */
 
-                var replaceFromDxWithoutEmptyElements = SHSplit.SplitByWhiteSpaces(replaceFrom[i], true);
-                var contentWithoutEmptyElements = SHSplit.SplitByWhiteSpaces(content, true);
+                var replaceFromDxWithoutEmptyElements = replaceFrom[i].Split(AllCharsSE.whiteSpacesChars.ToArray()).ToList();
+                var contentWithoutEmptyElements = content.Split(AllCharsSE.whiteSpacesChars.ToArray()).ToList();
                 ////DebugLogger.Instance.WriteNumberedList("", contentOneSpace, true);
                 // get indexes
-                List<FromTo> equalRanges = CAG.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
+                List<FromTo> equalRanges = CAGSH.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
                 if (equalRanges.Count == 0)
                 {
                     return content;
@@ -727,7 +711,7 @@ public class SHReplace : SHData
             {
                 content = content.Replace(replaceFrom[i], replaceTo[i]);
             }
-            //if (SH.ContainsAny(content, false, replaceFrom).Count > 0)
+            //if (SHSH.ContainsAny(content, false, replaceFrom).Count > 0)
             //{
 
             //}
@@ -789,7 +773,7 @@ public class SHReplace : SHData
 
     public static string ReplaceInLine(string l, string what, string to, bool checkForMoreOccurences)
     {
-        var c = CAG.ToList(l);
+        var c = new List<string>(new String[] { l }); //CAG.ToList(l);
         ReplaceInLine(c, 1, what, to, checkForMoreOccurences);
         return c[0];
     }
@@ -798,7 +782,7 @@ public class SHReplace : SHData
     {
         if (checkForMoreOccurences)
         {
-            var occ = SH.ReturnOccurencesOfString(l[lineFromOne - 1], what);
+            var occ = SHSH.ReturnOccurencesOfString(l[lineFromOne - 1], what);
             if (occ.Count > 1)
             {
                 foreach (var item in occ)
@@ -806,7 +790,7 @@ public class SHReplace : SHData
                     var after = l[lineFromOne - 1][item + what.Length];
                     if (after == AllCharsSE.comma || after == AllCharsSE.space)
                     {
-                        l[lineFromOne - 1] = SH.RemoveAndInsertReplace(l[lineFromOne - 1], item, what, to);
+                        l[lineFromOne - 1] = SHSH.RemoveAndInsertReplace(l[lineFromOne - 1], item, what, to);
                         break;
                     }
                 }
@@ -822,19 +806,19 @@ public class SHReplace : SHData
         }
     }
 
-    public static string ReplaceOnceIfStartedWith(string what, string replaceWhat, string zaCo)
+    private static string ReplaceOnce(string input, string what, string zaco)
     {
-        bool replaced;
-        return ReplaceOnceIfStartedWith(what, replaceWhat, zaCo, out replaced);
-    }
-    public static string ReplaceOnceIfStartedWith(string what, string replaceWhat, string zaCo, out bool replaced)
-    {
-        replaced = false;
-        if (what.StartsWith(replaceWhat))
+
+        if (what == "")
         {
-            replaced = true;
-            return ReplaceOnce(what, replaceWhat, zaCo);
+            return input;
         }
-        return what;
+
+        int pos = input.IndexOf(what);
+        if (pos == -1)
+        {
+            return input;
+        }
+        return input.Substring(0, pos) + zaco + input.Substring(pos + what.Length);
     }
 }
