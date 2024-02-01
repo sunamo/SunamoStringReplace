@@ -3,16 +3,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.1.24.1</Version>
+    <Version>24.2.1.2</Version>
     <Description>Method for replacing inside strings</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoCollectionsGenericShared" Version="24.1.24.1" />
-    <PackageReference Include="SunamoData" Version="24.1.23.2" />
-    <PackageReference Include="SunamoRegex" Version="24.1.22.2" />
-    <PackageReference Include="SunamoStringData" Version="24.1.23.1" />
-    <PackageReference Include="SunamoStringShared" Version="24.1.23.9" />
-    <PackageReference Include="SunamoStringTrim" Version="24.1.23.1" />
+    <PackageReference Include="SunamoData" Version="24.2.1.1" />
+    <PackageReference Include="SunamoRegex" Version="24.2.1.1" />
+    <PackageReference Include="SunamoStringData" Version="24.2.1.1" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);ASYNC</DefineConstants>

@@ -1,5 +1,7 @@
+namespace SunamoStringReplace._sunamo;
+
 //namespace SunamoStringReplace._sunamo;
-//public class CA
+//internal class CA
 //{
 
 //}

@@ -1,5 +1,9 @@
 namespace SunamoStringReplace;
 
+using SunamoRegex;
+using SunamoStringReplace._sunamo;
+
+
 public class SHReplace : SHData
 {
 
@@ -12,7 +16,7 @@ public class SHReplace : SHData
     /// <returns></returns>
     public static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
     {
-        text = SHSH.FromSpace160To32(text);
+        //text = SHSH.FromSpace160To32(text);
 
         if (alsoHtml)
         {
@@ -542,7 +546,7 @@ public class SHReplace : SHData
         {
             if (zaCo.Contains(item))
             {
-                ThrowEx.Custom("Nahrazovan\u00FD prvek " + item + " je prvkem j\u00EDm\u017E se nahrazuje  " + zaCo + AllStringsSE.dot);
+                throw new Exception("Nahrazovan\u00FD prvek " + item + " je prvkem j\u00EDm\u017E se nahrazuje  " + zaCo + AllStringsSE.dot);
             }
         }
         for (int i = 0; i < co.Length; i++)
@@ -599,7 +603,7 @@ public class SHReplace : SHData
             }
             else
             {
-                ThrowEx.Custom(item + " hasn't from");
+                throw new Exception(item + " hasn't from");
             }
             if (p.Count > 1)
             {
@@ -607,7 +611,7 @@ public class SHReplace : SHData
             }
             else
             {
-                ThrowEx.Custom(item + " hasn't to");
+                throw new Exception(item + " hasn't to");
             }
             if (WildcardHelper.IsWildcard(item))
             {
@@ -640,7 +644,7 @@ public class SHReplace : SHData
         }
         else
         {
-            ThrowEx.Custom($"First line is not excepted '{from}', was '{l[0]}'");
+            throw new Exception($"First line is not excepted '{from}', was '{l[0]}'");
         }
 
         return string.Join(Consts.nl, l);
@@ -790,7 +794,11 @@ public class SHReplace : SHData
                     var after = l[lineFromOne - 1][item + what.Length];
                     if (after == AllCharsSE.comma || after == AllCharsSE.space)
                     {
-                        l[lineFromOne - 1] = SHSH.RemoveAndInsertReplace(l[lineFromOne - 1], item, what, to);
+                        var s = l[lineFromOne - 1];
+                        s = s.Remove(item, what.Length);
+                        s = s.Insert(item, to);
+
+                        l[lineFromOne - 1] = s;
                         break;
                     }
                 }
