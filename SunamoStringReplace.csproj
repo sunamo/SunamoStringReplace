@@ -7,9 +7,9 @@
     <Description>Method for replacing inside strings</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoData" Version="24.2.1.1" />
-    <PackageReference Include="SunamoRegex" Version="24.2.1.1" />
-    <PackageReference Include="SunamoStringData" Version="24.2.1.1" />
+    <PackageReference Include="SunamoData" Version="24.2.1.3" />
+    <PackageReference Include="SunamoRegex" Version="24.2.1.3" />
+    <PackageReference Include="SunamoStringData" Version="24.2.1.3" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);ASYNC</DefineConstants>
