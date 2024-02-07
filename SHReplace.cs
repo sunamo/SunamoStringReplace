@@ -396,13 +396,6 @@ public class SHReplace : SHData
     /// <param name="co"></param>
     public static string ReplaceAllArray(string vstup, string zaCo, params string[] co)
     {
-        //Stupid, zaCo can be null
-
-        //if (string.IsNullOrEmpty(zaCo))
-        //{
-        //    return vstup;
-        //}
-
         foreach (var item in co)
         {
             if (string.IsNullOrEmpty(item))
@@ -814,7 +807,7 @@ public class SHReplace : SHData
         }
     }
 
-    private static string ReplaceOnce(string input, string what, string zaco)
+    public static string ReplaceOnce(string input, string what, string zaco)
     {
 
         if (what == "")
