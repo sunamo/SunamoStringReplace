@@ -7,7 +7,6 @@
     <Description>Method for replacing inside strings</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoData" Version="24.2.6.2" />
     <PackageReference Include="SunamoRegex" Version="24.2.6.3" />
     <PackageReference Include="SunamoStringData" Version="24.2.6.2" />
   </ItemGroup>
