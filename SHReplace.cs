@@ -539,7 +539,7 @@ public class SHReplace : SHData
         {
             if (zaCo.Contains(item))
             {
-                throw new Exception("Nahrazovan\u00FD prvek " + item + " je prvkem j\u00EDm\u017E se nahrazuje  " + zaCo + AllStringsSE.dot);
+                throw new Exception("Nahrazovan\u00FD prvek " + item + " je prvkem j\u00EDm\u017E se nahrazuje  " + zaCo + AllStrings.dot);
             }
         }
         for (int i = 0; i < co.Length; i++)
@@ -567,7 +567,7 @@ public class SHReplace : SHData
     public static string ReplaceWhiteSpaces(string p, string replaceWith)
     {
         var replaced = ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(p, replaceWith);
-        return Replace(replaced, AllStringsSE.space, replaceWith, true);
+        return Replace(replaced, AllStrings.space, replaceWith, true);
     }
 
     /// <summary>
