@@ -524,7 +524,7 @@ public class SHReplace : SHData
             text = text.Replace("&nbsp; ", " ");
             text = text.Replace("&nbsp;", " ");
         }
-        var p = SHSE.Split(text, AllCharsSE.whiteSpacesChars.ConvertAll(d => d.ToString()).ToArray());
+        var p = SHSE.Split(text, AllChars.whiteSpacesChars.ConvertAll(d => d.ToString()).ToArray());
         return string.Join(" ", p);
     }
 
@@ -665,8 +665,8 @@ public class SHReplace : SHData
                 porovnat zaměněné a originál - namapovat co je mezi nimi
                 */
 
-                var replaceFromDxWithoutEmptyElements = replaceFrom[i].Split(AllCharsSE.whiteSpacesChars.ToArray()).ToList();
-                var contentWithoutEmptyElements = content.Split(AllCharsSE.whiteSpacesChars.ToArray()).ToList();
+                var replaceFromDxWithoutEmptyElements = replaceFrom[i].Split(AllChars.whiteSpacesChars.ToArray()).ToList();
+                var contentWithoutEmptyElements = content.Split(AllChars.whiteSpacesChars.ToArray()).ToList();
                 ////DebugLogger.Instance.WriteNumberedList("", contentOneSpace, true);
                 // get indexes
                 List<FromTo> equalRanges = CAGSH.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
@@ -739,7 +739,7 @@ public class SHReplace : SHData
         sb.Clear();
         t = t.Trim();
         // jen zde protože jestli něco dělám přes ts tak to dělám na rychlost a to už musí být tohohle zbavené
-        t = t.TrimEnd(AllCharsSE.qm, AllCharsSE.apos);
+        t = t.TrimEnd(AllChars.qm, AllChars.apos);
         sb.Append(t);
         return ReplaceTypedWhitespacesForNormal(sb, quote, t24, bs).ToString();
     }
@@ -785,7 +785,7 @@ public class SHReplace : SHData
                 foreach (var item in occ)
                 {
                     var after = l[lineFromOne - 1][item + what.Length];
-                    if (after == AllCharsSE.comma || after == AllCharsSE.space)
+                    if (after == AllChars.comma || after == AllChars.space)
                     {
                         var s = l[lineFromOne - 1];
                         s = s.Remove(item, what.Length);

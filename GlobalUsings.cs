@@ -9,3 +9,7 @@ global using SunamoData.Data;
 global using System.Data;
 global using System.Text.RegularExpressions;
 global using SunamoStringData;
+global using System.Collections.Generic;
+global using System.Collections;
+global using System.IO;
+
