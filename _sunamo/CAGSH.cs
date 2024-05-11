@@ -2,7 +2,7 @@
 using SunamoEnums.Enums;
 
 
-namespace SunamoStringReplace._sunamo;
+namespace SunamoStringReplace;
 
 internal class CAGSH
 {

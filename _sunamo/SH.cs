@@ -1,4 +1,4 @@
-namespace SunamoStringReplace._sunamo;
+namespace SunamoStringReplace;
 
 //namespace SunamoStringReplace._sunamo;
 //internal class SH
