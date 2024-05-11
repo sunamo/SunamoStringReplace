@@ -227,8 +227,8 @@ public class SHReplace : SHData
     {
         if (pairLines)
         {
-            var from2 = SHSE.Split(co, Environment.NewLine);
-            var to2 = SHSE.Split(zaCo, Environment.NewLine);
+            var from2 = SHSunamoExceptions.Split(co, Environment.NewLine);
+            var to2 = SHSunamoExceptions.Split(zaCo, Environment.NewLine);
             ThrowEx.DifferentCountInLists("from2", from2, "to2", to2);
 
             for (int i = 0; i < from2.Count; i++)
@@ -275,7 +275,7 @@ public class SHReplace : SHData
         {
             // Must be split, not splitNone
             // 'ReplaceInAllFiles:  Different count elements in collection from2 - 4 vs. to2 - 3'
-            var p = SHSE.Split(item, delimiter);
+            var p = SHSunamoExceptions.Split(item, delimiter);
             if (p.Count == 1)
             {
                 if (item.EndsWith(delimiter))
@@ -447,7 +447,7 @@ public class SHReplace : SHData
 
     public static string ReplaceLastOccurenceOfString(string text, string co, string čím)
     {
-        var roz = SHSE.Split(text, co);
+        var roz = SHSunamoExceptions.Split(text, co);
         if (roz.Count == 1)
         {
             return text.Replace(co, čím);
@@ -524,7 +524,7 @@ public class SHReplace : SHData
             text = text.Replace("&nbsp; ", " ");
             text = text.Replace("&nbsp;", " ");
         }
-        var p = SHSE.Split(text, AllChars.whiteSpacesChars.ConvertAll(d => d.ToString()).ToArray());
+        var p = SHSunamoExceptions.Split(text, AllChars.whiteSpacesChars.ConvertAll(d => d.ToString()).ToArray());
         return string.Join(" ", p);
     }
 
@@ -584,7 +584,7 @@ public class SHReplace : SHData
         var l = SHSE.GetLines(v);
         foreach (var item in l)
         {
-            var p = SHSE.Split(item, delimiter);
+            var p = SHSunamoExceptions.Split(item, delimiter);
 
             p = p.ConvertAll(d => d.Trim());
 
