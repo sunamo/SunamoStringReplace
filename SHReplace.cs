@@ -265,7 +265,7 @@ public class SHReplace : SHData
         StringBuilder from = new StringBuilder();
         StringBuilder to = new StringBuilder();
 
-        var l = SHSE.GetLines(fromTo);
+        var l = SHGetLines.GetLines(fromTo);
         l = l.Where(d => d.Trim() != string.Empty).ToList();
         string delimiter = Consts.transformTo;
 
@@ -581,7 +581,7 @@ public class SHReplace : SHData
     public static string ReplaceManyFromString(string input, string v, string delimiter)
     {
         string methodName = "ReplaceManyFromString";
-        var l = SHSE.GetLines(v);
+        var l = SHGetLines.GetLines(v);
         foreach (var item in l)
         {
             var p = SHSunamoExceptions.Split(item, delimiter);
@@ -630,7 +630,7 @@ public class SHReplace : SHData
 
     public static string ReplaceFirstLine(string result, string from, string to)
     {
-        var l = SHSE.GetLines(result);
+        var l = SHGetLines.GetLines(result);
         if (l[0] == from)
         {
             l[0] = to;
