@@ -1,9 +1,9 @@
 namespace SunamoStringReplace;
 
 
-public class SHGetLines
+internal class SHGetLines
 {
-    public static List<string> GetLines(string p)
+    internal static List<string> GetLines(string p)
     {
         List<string> vr = new List<string>();
         StringReader sr = new StringReader(p);
