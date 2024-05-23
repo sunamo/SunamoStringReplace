@@ -4,9 +4,9 @@
 
 namespace SunamoStringReplace;
 
-internal class CAGSH
+public class CAGSH
 {
-    internal static List<FromTo> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
+    public static List<FromTo> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
     {
         List<FromTo> result = new List<FromTo>();
         int? dx = null;
