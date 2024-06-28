@@ -1,3 +1,5 @@
+
+namespace SunamoStringReplace;
 using System.Diagnostics;
 using System.Text;
 

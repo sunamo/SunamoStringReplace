@@ -1,3 +1,5 @@
+
+namespace SunamoStringReplace;
 public class SHReplace : SHData
 {
     /// <summary>
