@@ -1,8 +1,8 @@
 namespace SunamoStringReplace;
 
-public class SHSH
+internal class SHSH
 {
-    public static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft, ref List<int> onlyRight)
+    internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft, ref List<int> onlyRight)
     {
         var l = new List<Tuple<int, int>>();
 
@@ -149,7 +149,7 @@ public class SHSH
         return result;
     }
 
-    public static string AddBeforeUpperChars(string text, char add, bool preserveAcronyms)
+    internal static string AddBeforeUpperChars(string text, char add, bool preserveAcronyms)
     {
         if (string.IsNullOrWhiteSpace(text))
             return string.Empty;
@@ -168,7 +168,7 @@ public class SHSH
     }
 
 
-    public static List<int> ReturnOccurencesOfString(string vcem, string co)
+    internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
         //vcem = NormalizeString(vcem);
         List<int> Results = new List<int>();
@@ -189,7 +189,7 @@ public class SHSH
         return Results;
     }
 
-    public static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
+    internal static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
     {
         List<int> removeOnIndexes = new List<int>();
 
