@@ -1,12 +1,3 @@
-namespace
-#if SunamoString
-SunamoString
-#elif SunamoWikipedia
-SunamoWikipedia
-#else
-SunamoStringReplace
-#endif
-;
 public class SHReplace : SHData
 {
     /// <summary>
