@@ -1,7 +1,7 @@
 namespace SunamoStringReplace;
 
 
-internal enum FromToUse
+internal enum FromToUseStringReplace
 {
     DateTime,
     Unix,

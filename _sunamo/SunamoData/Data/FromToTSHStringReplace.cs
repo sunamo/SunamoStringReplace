@@ -6,12 +6,12 @@ internal class FromToTSHStringReplace<T>
     
     internal bool empty;
     protected long fromL;
-    internal FromToUse ftUse = FromToUse.DateTime;
+    internal FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime;
     protected long toL;
     internal FromToTSHStringReplace()
     {
         var t = typeof(T);
-        if (t == Types.tInt) ftUse = FromToUse.None;
+        if (t == Types.tInt) ftUse = FromToUseStringReplace.None;
     }
     /// <summary>
     ///     Use Empty contstant outside of class
@@ -28,7 +28,7 @@ internal class FromToTSHStringReplace<T>
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="ftUse"></param>
-    internal FromToTSHStringReplace(T from, T to, FromToUse ftUse = FromToUse.DateTime) : this()
+    internal FromToTSHStringReplace(T from, T to, FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime) : this()
     {
         this.from = from;
         this.to = to;
