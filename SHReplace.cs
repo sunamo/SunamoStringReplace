@@ -587,7 +587,7 @@ public class SHReplace : SHData
                 var contentWithoutEmptyElements = content.Split(AllChars.whiteSpacesChars.ToArray()).ToList();
                 ////DebugLogger.Instance.WriteNumberedList("", contentOneSpace, true);
                 // get indexes
-                List<FromTo> equalRanges = CAGSH.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
+                List<FromToStringReplace> equalRanges = CAGSH.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
                 if (equalRanges.Count == 0)
                 {
                     return content;

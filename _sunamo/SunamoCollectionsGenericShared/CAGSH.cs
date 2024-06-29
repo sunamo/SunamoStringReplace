@@ -6,9 +6,9 @@ namespace SunamoStringReplace;
 
 internal class CAGSH
 {
-    internal static List<FromTo> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
+    internal static List<FromToStringReplace> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
     {
-        List<FromTo> result = new List<FromTo>();
+        List<FromToStringReplace> result = new List<FromToStringReplace>();
         int? dx = null;
         var r_first = r[0];
         int startAt = 0;
@@ -42,7 +42,7 @@ internal class CAGSH
                 else
                 {
                     int dx2 = (int)dx;
-                    result.Add(new FromTo(dx2 - r.Count + 1, dx2, FromToUse.None));
+                    result.Add(new FromToStringReplace(dx2 - r.Count + 1, dx2, FromToUse.None));
                     dx = null;
                 }
             }
