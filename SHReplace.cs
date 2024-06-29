@@ -1,6 +1,6 @@
 
 namespace SunamoStringReplace;
-public class SHReplace : SHData
+public class SHReplace //: SHData
 {
     /// <summary>
     /// Working - see unit tests
