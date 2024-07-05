@@ -22,3 +22,6 @@ global using SunamoStringReplace._sunamo.SunamoEnums.Enums;
 global using SunamoStringReplace._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoStringReplace._sunamo.SunamoExceptions._AddedToAllCsproj;
 global using SunamoStringReplace._sunamo.SunamoValues.Constants;
+global using System.Diagnostics;
+global using System.Net;
+global using System.Threading.Tasks;

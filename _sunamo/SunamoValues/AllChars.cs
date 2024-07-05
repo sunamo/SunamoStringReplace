@@ -1,4 +1,3 @@
-
 namespace SunamoStringReplace._sunamo.SunamoValues;
 internal class AllChars
 {

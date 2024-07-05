@@ -1,7 +1,7 @@
 namespace SunamoStringReplace._sunamo.SunamoEnums.Enums;
 
 
-internal enum FromToUseStringReplace
+public enum FromToUseStringReplace
 {
     DateTime,
     Unix,
