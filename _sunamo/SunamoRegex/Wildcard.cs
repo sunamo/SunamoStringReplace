@@ -1,4 +1,4 @@
-namespace SunamoStringReplace;
+namespace SunamoStringReplace._sunamo.SunamoRegex;
 
 using System.Text.RegularExpressions;
 

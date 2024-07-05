@@ -1,4 +1,4 @@
-namespace SunamoStringReplace;
+namespace SunamoStringReplace._sunamo.SunamoData.Data;
 
 
 internal class FromToTSHStringReplace<T>

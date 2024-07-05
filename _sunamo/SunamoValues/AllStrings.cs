@@ -1,5 +1,5 @@
 
-namespace SunamoStringReplace;
+namespace SunamoStringReplace._sunamo.SunamoValues;
 internal class AllStrings
 {
     internal const string dot = ".";

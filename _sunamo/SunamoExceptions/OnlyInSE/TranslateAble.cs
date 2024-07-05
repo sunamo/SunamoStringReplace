@@ -1,5 +1,5 @@
 
-namespace SunamoStringReplace;
+namespace SunamoStringReplace._sunamo.SunamoExceptions.OnlyInSE;
 internal class TranslateAble
 {
     

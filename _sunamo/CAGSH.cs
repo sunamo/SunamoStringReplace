@@ -1,3 +1,5 @@
+
+namespace SunamoStringReplace._sunamo;
 using SunamoStringReplace;
 using System;
 using System.Collections.Generic;
