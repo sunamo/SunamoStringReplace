@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 internal class SHSH
 {
-    public static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft, ref List<int> onlyRight)
+    internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft, ref List<int> onlyRight)
     {
         var l = new List<Tuple<int, int>>();
         onlyLeft = occL.ToList();
@@ -140,7 +140,7 @@ internal class SHSH
         return Results;
     }
 
-    public static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
+    internal static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
     {
         List<int> removeOnIndexes = new List<int>();
         var sb = new StringBuilder(vr);

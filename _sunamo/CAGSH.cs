@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 internal class CAGSH
 {
-    public static List<FromToStringReplace> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
+    internal static List<FromToStringReplace> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
     {
         List<FromToStringReplace> result = new List<FromToStringReplace>();
         int? dx = null;
