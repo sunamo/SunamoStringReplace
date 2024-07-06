@@ -25,3 +25,4 @@ global using SunamoStringReplace._sunamo.SunamoValues.Constants;
 global using System.Diagnostics;
 global using System.Net;
 global using System.Threading.Tasks;
+global using SunamoStringReplace._public.SunamoEnums.Enums;

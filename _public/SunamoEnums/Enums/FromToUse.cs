@@ -1,4 +1,4 @@
-namespace SunamoStringReplace._sunamo.SunamoEnums.Enums;
+namespace SunamoStringReplace._public.SunamoEnums.Enums;
 public enum FromToUseStringReplace
 {
     DateTime,
