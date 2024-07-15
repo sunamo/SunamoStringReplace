@@ -47,11 +47,11 @@ internal class SHSE
     /// <param name="dot"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    internal static List<string> SplitChar(string s, params char[] dot)
+    internal static List<string> SplitCharMore(string s, params char[] dot)
     {
         return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
-    internal static List<string> Split(string s, params string[] dot)
+    internal static List<string> SplitMore(string s, params string[] dot)
     {
         return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
