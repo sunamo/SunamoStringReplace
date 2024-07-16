@@ -1,6 +1,4 @@
-
-namespace SunamoStringReplace._sunamo;
-using System.Collections.Generic;
+//namespace SunamoStringReplace._sunamo.SunamoExceptions._AddedToAllCsproj;
 
 internal class CA
 {
@@ -15,5 +13,24 @@ internal class CA
     {
         for (var i = 0; i < l.Count; i++) l[i] = l[i].Trim();
         return l;
+    }
+
+    internal static void InitFillWith(List<string> datas, int pocet, string initWith = Consts.stringEmpty)
+    {
+        InitFillWith<string>(datas, pocet, initWith);
+    }
+    internal static void InitFillWith<T>(List<T> datas, int pocet, T initWith)
+    {
+        for (int i = 0; i < pocet; i++)
+        {
+            datas.Add(initWith);
+        }
+    }
+    internal static void InitFillWith<T>(List<T> arr, int columns)
+    {
+        for (int i = 0; i < columns; i++)
+        {
+            arr.Add(default);
+        }
     }
 }
