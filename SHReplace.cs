@@ -1,4 +1,5 @@
 namespace SunamoStringReplace;
+
 public class SHReplace //: SHData
 {
     /// <summary>
@@ -9,7 +10,7 @@ public class SHReplace //: SHData
     /// <returns></returns>
     public static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
     {
-        //text = SHSH.FromSpace160To32(text);
+        //text = SH.FromSpace160To32(text);
         if (alsoHtml)
         {
             text = text.Replace(" &nbsp;", " ");
@@ -79,7 +80,7 @@ public class SHReplace //: SHData
     }
     public static string ReplaceFromEnd(string s, string zaCo, string co)
     {
-        List<int> occ = SHSH.ReturnOccurencesOfString(s, co);
+        List<int> occ = SH.ReturnOccurencesOfString(s, co);
         for (int i = occ.Count - 1; i >= 0; i--)
         {
             s = ReplaceByIndex(s, zaCo, occ[i], co.Length);
@@ -254,7 +255,7 @@ public class SHReplace //: SHData
         }
         if (removeEndingPairCharsWhenDontHaveStarting)
         {
-            vr = SHSH.RemoveEndingPairCharsWhenDontHaveStarting(vr, AllStrings.lcub, AllStrings.rcub);
+            vr = SH.RemoveEndingPairCharsWhenDontHaveStarting(vr, AllStrings.lcub, AllStrings.rcub);
         }
         return vr;
     }
@@ -283,7 +284,7 @@ public class SHReplace //: SHData
     }
     public static string ReplaceAllExceptPrefixed(string t, string to, string from, string fromCannotBePrefixed)
     {
-        var occ = SHSH.ReturnOccurencesOfString(t, from);
+        var occ = SH.ReturnOccurencesOfString(t, from);
         for (int i = occ.Count - 1; i >= 0; i--)
         {
             var item = occ[i];
@@ -586,7 +587,7 @@ public class SHReplace //: SHData
                 var contentWithoutEmptyElements = content.Split(AllChars.whiteSpacesChars.ToArray()).ToList();
                 ////DebugLogger.Instance.WriteNumberedList("", contentOneSpace, true);
                 // get indexes
-                List<FromToStringReplace> equalRanges = CAGSH.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
+                List<FromToStringReplace> equalRanges = CAG.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
                 if (equalRanges.Count == 0)
                 {
                     return content;
@@ -624,7 +625,7 @@ public class SHReplace //: SHData
             {
                 content = content.Replace(replaceFrom[i], replaceTo[i]);
             }
-            //if (SHSH.ContainsAny(content, false, replaceFrom).Count > 0)
+            //if (SH.ContainsAny(content, false, replaceFrom).Count > 0)
             //{
             //}
         }
@@ -683,7 +684,7 @@ public class SHReplace //: SHData
     {
         if (checkForMoreOccurences)
         {
-            var occ = SHSH.ReturnOccurencesOfString(l[lineFromOne - 1], what);
+            var occ = SH.ReturnOccurencesOfString(l[lineFromOne - 1], what);
             if (occ.Count > 1)
             {
                 foreach (var item in occ)

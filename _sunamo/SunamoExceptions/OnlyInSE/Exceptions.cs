@@ -1,4 +1,5 @@
-namespace SunamoStringReplace._sunamo.SunamoExceptions.OnlyInSE;
+namespace SunamoStringReplace.OnlyInSE;
+
 internal class Exceptions
 {
     internal static string UseRlc(string before)

@@ -1,11 +1,10 @@
 namespace SunamoStringReplace._sunamo.SunamoStringData;
 
-
 /// <summary>
 /// Zde musí být vše veřejné protože se to používá i v jiných třídách než je ve SH
 /// A taky protože někdy od SHData dědit nemůžu ale hodilo by se např. od SHSH
 /// </summary>
-internal class SHData : SHSE
+internal class SHData
 {
     internal static bool s_cs = false;
     internal const string postfixSpaceCommaNewline = " (Space, comma, newline delimited)";

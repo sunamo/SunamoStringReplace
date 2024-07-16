@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoStringReplace._sunamo;
+
 internal class SHSplit
 {
     internal static List<string> SplitMore(string p, params string[] newLine)

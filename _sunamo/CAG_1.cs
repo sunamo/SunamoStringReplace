@@ -1,7 +1,6 @@
 namespace SunamoStringReplace._sunamo;
 
-
-internal class CAGSH
+internal class CAG
 {
     internal static List<FromToStringReplace> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
     {
