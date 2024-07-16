@@ -1,5 +1,4 @@
-namespace SunamoStringReplace.OnlyInSE;
-
+namespace SunamoStringReplace._sunamo.SunamoExceptions.OnlyInSE;
 
 internal class Types
 {

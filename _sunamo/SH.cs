@@ -1,8 +1,7 @@
-namespace SunamoStringReplace._sunamo;
+//namespace SunamoStringReplace._sunamo;
 
 internal class SH
 {
-
     internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
 
@@ -91,7 +90,7 @@ internal class SH
     internal static string NullToStringOrDefault(object n, string v)
     {
         throw new Exception(
-        "Tahle metoda vypadala jinak ale jak idiot jsem ji změnil. Tím jak jsem poté přesouval metody tam zpět už je těžké se k tomu dostat.");
+            "Tahle metoda vypadala jinak ale jak idiot jsem ji změnil. Tím jak jsem poté přesouval metody tam zpět už je těžké se k tomu dostat.");
         return null;
         //return n == null ? " " + Consts.nulled : AllStrings.space + v.ToString();
     }
@@ -200,7 +199,7 @@ internal class SH
         //l.AddRange(l2);
         occL.Sort();
         var result = l; //l.OrderByDescending(d => d.Item1).ToList();
-                        //
+        //
         List<int> alreadyProcessed = new List<int>();
         int dx = -1;
         for (int y = 0; y < result.Count; y++)
@@ -290,4 +289,5 @@ internal class SH
         //}
         return sb.ToString();
     }
+
 }
