@@ -1,6 +1,5 @@
 namespace SunamoStringReplace._sunamo.SunamoData.Data;
 
-
 /// <summary>
 ///     Must have always entered both from and to
 ///     None of event could have unlimited time!
@@ -8,9 +7,11 @@ namespace SunamoStringReplace._sunamo.SunamoData.Data;
 internal class FromToStringReplace : FromToTSHStringReplace<long>
 {
     internal static FromToStringReplace Empty = new(true);
+
     internal FromToStringReplace()
     {
     }
+
     /// <summary>
     ///     Use Empty contstant outside of class
     /// </summary>
@@ -19,6 +20,7 @@ internal class FromToStringReplace : FromToTSHStringReplace<long>
     {
         this.empty = empty;
     }
+
     /// <summary>
     ///     A3 true = DateTime
     ///     A3 False = None

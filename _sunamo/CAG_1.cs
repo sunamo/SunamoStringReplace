@@ -4,12 +4,12 @@ internal class CAG
 {
     internal static List<FromToStringReplace> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
     {
-        List<FromToStringReplace> result = new List<FromToStringReplace>();
+        var result = new List<FromToStringReplace>();
         int? dx = null;
         var r_first = r[0];
-        int startAt = 0;
-        int valueToCompare = 0;
-        for (int i = 0; i < contentOneSpace.Count; i++)
+        var startAt = 0;
+        var valueToCompare = 0;
+        for (var i = 0; i < contentOneSpace.Count; i++)
         {
             var _contentOneSpace = contentOneSpace[i];
             if (!dx.HasValue)
@@ -37,17 +37,19 @@ internal class CAG
                 }
                 else
                 {
-                    int dx2 = (int)dx;
+                    var dx2 = (int)dx;
                     result.Add(new FromToStringReplace(dx2 - r.Count + 1, dx2, FromToUseStringReplace.None));
                     dx = null;
                 }
             }
         }
+
         foreach (var item in result)
         {
             item.from--;
             item.to--;
         }
+
         return result;
     }
 }

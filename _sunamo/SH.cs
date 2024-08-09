@@ -4,22 +4,23 @@ internal class SH
 {
     internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
-
-        List<int> Results = new List<int>();
-        for (int Index = 0; Index < (vcem.Length - co.Length) + 1; Index++)
+        var Results = new List<int>();
+        for (var Index = 0; Index < vcem.Length - co.Length + 1; Index++)
         {
             var subs = vcem.Substring(Index, co.Length);
             ////////DebugLogger.Instance.WriteLine(subs);
             // non-breaking space. &nbsp; code 160
             // 32 space
-            char ch = subs[0];
-            char ch2 = co[0];
+            var ch = subs[0];
+            var ch2 = co[0];
             if (subs == AllStrings.space)
             {
             }
+
             if (subs == co)
                 Results.Add(Index);
         }
+
         return Results;
     }
 
@@ -39,6 +40,7 @@ internal class SH
         var sb = nazevPP.Substring(1);
         return nazevPP[0].ToString().ToLower() + sb;
     }
+
     /// <summary>
     ///     Convert \r\n to NewLine etc.
     /// </summary>
@@ -57,8 +59,10 @@ internal class SH
             case "\\t":
                 return "\t";
         }
+
         return delimiter;
     }
+
     /// <summary>
     ///     Musí tu být. split z .net vrací []
     ///     krom toho je instanční. musel bych měnit hodně kódu kvůli toho
@@ -71,14 +75,17 @@ internal class SH
     {
         return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
+
     internal static List<string> SplitMore(string s, params string[] dot)
     {
         return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
+
     internal static List<string> SplitNone(string text, params string[] deli)
     {
         return text.Split(deli, StringSplitOptions.None).ToList();
     }
+
     /// <summary>
     ///     Usage: BadFormatOfElementInList
     ///     If null, return Consts.nulled
@@ -94,6 +101,7 @@ internal class SH
         return null;
         //return n == null ? " " + Consts.nulled : AllStrings.space + v.ToString();
     }
+
     /// <summary>
     ///     Usage: BadFormatOfElementInList
     ///     If null, return Consts.nulled
@@ -106,6 +114,7 @@ internal class SH
         //return NullToStringOrDefault(n, null);
         return n == null ? " " + Consts.nulled : AllStrings.space + n;
     }
+
     /// <summary>
     ///     Usage: Exceptions.MoreCandidates
     ///     není v .net (pouze char), přes split to taky nedává smysl (dá se to udělat i s .net ale bude to pomalejší)
@@ -120,18 +129,16 @@ internal class SH
     }
 
 
-    internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft, ref List<int> onlyRight)
+    internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft,
+        ref List<int> onlyRight)
     {
         var l = new List<Tuple<int, int>>();
         onlyLeft = occL.ToList();
         onlyRight = occR.ToList();
-        for (int i = occR.Count - 1; i >= 0; i--)
+        for (var i = occR.Count - 1; i >= 0; i--)
         {
-            int lastRight = occR[i];
-            if (occL.Count == 0)
-            {
-                break;
-            }
+            var lastRight = occR[i];
+            if (occL.Count == 0) break;
             var lastLeft = occL.Last();
             if (lastRight < lastLeft)
             {
@@ -147,6 +154,7 @@ internal class SH
                 l.Add(new Tuple<int, int>(lastLeft, lastRight));
             }
         }
+
         occL = onlyLeft;
         //foreach (var item in l)
         //{
@@ -157,8 +165,8 @@ internal class SH
         //l.Reverse();
         var addToAnotherCollection = new List<int>();
         var l2 = new List<Tuple<int, int>>();
-        List<int> alreadyProcessedItem1 = new List<int>();
-        for (int i = l.Count - 1; i >= 0; i--)
+        var alreadyProcessedItem1 = new List<int>();
+        for (var i = l.Count - 1; i >= 0; i--)
         {
             if (alreadyProcessedItem1.Contains(l[i].Item1))
             {
@@ -167,8 +175,10 @@ internal class SH
                 l.RemoveAt(i);
                 //continue;
             }
+
             alreadyProcessedItem1.Add(l[i].Item1);
         }
+
         //for (int i = l2.Count - 1; i >= 0; i--)
         //{
         //    if (l.Contains(l2[i]))
@@ -196,13 +206,14 @@ internal class SH
                 }
             }
         }
+
         //l.AddRange(l2);
         occL.Sort();
         var result = l; //l.OrderByDescending(d => d.Item1).ToList();
         //
-        List<int> alreadyProcessed = new List<int>();
-        int dx = -1;
-        for (int y = 0; y < result.Count; y++)
+        var alreadyProcessed = new List<int>();
+        var dx = -1;
+        for (var y = 0; y < result.Count; y++)
         {
             var item = result[y];
             var i = item.Item1;
@@ -215,8 +226,10 @@ internal class SH
                     result[i] = new Tuple<int, int>(i, result[y - 1].Item2);
                 }
             }
+
             alreadyProcessed.Add(i);
         }
+
         onlyLeft = occL;
         onlyLeft = onlyLeft.Distinct().ToList();
         onlyRight = onlyRight.Distinct().ToList();
@@ -225,27 +238,24 @@ internal class SH
             onlyLeft.Remove(item.Item1);
             onlyRight.Remove(item.Item2);
         }
+
         result.Reverse();
         return result;
     }
 
 
-
     internal static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
     {
-        List<int> removeOnIndexes = new List<int>();
+        var removeOnIndexes = new List<int>();
         var sb = new StringBuilder(vr);
         var occL = ReturnOccurencesOfString(vr, cbl);
         var occR = ReturnOccurencesOfString(vr, cbr);
         List<int> onlyLeft = null;
         List<int> onlyRight = null;
-        var l = SH.GetPairsStartAndEnd(occL, occR, ref onlyLeft, ref onlyRight);
+        var l = GetPairsStartAndEnd(occL, occR, ref onlyLeft, ref onlyRight);
         onlyLeft.AddRange(onlyRight);
         onlyLeft.Sort();
-        for (int i = onlyLeft.Count - 1; i >= 0; i--)
-        {
-            sb.Remove(onlyLeft[i], 1);
-        }
+        for (var i = onlyLeft.Count - 1; i >= 0; i--) sb.Remove(onlyLeft[i], 1);
         //if (occL.Count == 0)
         //{
         //    result = vr.SHReplace.Replace(AllStrings.rcub, string.Empty);
@@ -289,5 +299,4 @@ internal class SH
         //}
         return sb.ToString();
     }
-
 }
