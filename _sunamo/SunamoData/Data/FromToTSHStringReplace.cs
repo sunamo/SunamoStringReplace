@@ -10,7 +10,7 @@ internal class FromToTSHStringReplace<T>
     internal FromToTSHStringReplace()
     {
         var t = typeof(T);
-        if (t == Types.tInt) ftUse = FromToUseStringReplace.None;
+        if (t == typeof(int)) ftUse = FromToUseStringReplace.None;
     }
 
     /// <summary>

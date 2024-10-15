@@ -1,10 +1,7 @@
-﻿using System;
+namespace SunamoStringReplace._sunamo;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SunamoStringReplace._sunamo;
 internal class CATo
 {
     public static List<T> ToList<T>(params T[] t)
