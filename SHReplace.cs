@@ -20,16 +20,16 @@ public class SHReplace //: SHData
             text = text.Replace("&nbsp;", " ");
         }
 
-        while (text.Contains(AllStrings.doubleSpace))
-            text = ReplaceAll2(text, AllStrings.space, AllStrings.doubleSpace);
+        while (text.Contains(""))
+            text = ReplaceAll2(text, "", "");
         // Here it was cycling, dont know why, therefore without while
-        //while (text.Contains(AllStrings.doubleSpace16032))
+        //while (text.Contains("space160 + space"))
         //{
-        //text = ReplaceAll2(text, AllStrings.space, AllStrings.doubleSpace16032);
+        //text = ReplaceAll2(text, "", "space160 + space");
         //}
-        //while (text.Contains(AllStrings.doubleSpace32160))
+        //while (text.Contains("space + space160"))
         //{
-        //text = ReplaceAll2(text, AllStrings.space, AllStrings.doubleSpace32160);
+        //text = ReplaceAll2(text, "", "space + space160");
         //}
         return text;
     }
@@ -40,14 +40,14 @@ public class SHReplace //: SHData
         var s = v.Split(deli, StringSplitOptions.None).ToList();
         if (replaceNewLineBySpace)
             for (var i = 0; i < s.Count; i++)
-                s[i] = ReplaceAll(s[i], AllStrings.space, "\r", @"\n", Environment.NewLine);
+                s[i] = ReplaceAll(s[i], "", "\r", @"\n", Environment.NewLine);
         if (moreSpacesForOne)
             for (var i = 0; i < s.Count; i++)
-                s[i] = ReplaceAll2(s[i], AllStrings.space, AllStrings.doubleSpace);
+                s[i] = ReplaceAll2(s[i], "", "");
         if (_trim) s = s.ConvertAll(d => d.Trim());
         if (escapeQuoations)
         {
-            var rep = AllStrings.qm;
+            var rep = "\"";
             for (var i = 0; i < s.Count; i++) s[i] = ReplaceFromEnd(s[i], "\"", rep);
             //}
         }
@@ -79,14 +79,15 @@ public class SHReplace //: SHData
     }
 
     /// <summary>
-    ///     Replace AllChars.whiteSpacesChars with A2
+    ///     Replace AllChars.whiteSpaceChars with A2
     /// </summary>
     /// <param name="s"></param>
     /// <param name="forWhat"></param>
     /// <returns></returns>
     public static string ReplaceWhitespaces(string s, string forWhat)
     {
-        foreach (var item in AllChars.whiteSpacesChars) s = s.Replace(item.ToString(), forWhat);
+        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
+        foreach (var item in whitespaceChar.whiteSpaceChars) s = s.Replace(item.ToString(), forWhat);
         return s;
     }
 
@@ -204,7 +205,7 @@ public class SHReplace //: SHData
         var to = new StringBuilder();
         var l = SHGetLines.GetLines(fromTo);
         l = l.Where(d => d.Trim() != string.Empty).ToList();
-        var delimiter = Consts.transformTo;
+        var delimiter = "->";
         var replaceForEmpty = new List<string>();
         foreach (var item in l)
         {
@@ -227,7 +228,7 @@ public class SHReplace //: SHData
         var vr = ReplaceAll2(input, to.ToString(), from.ToString(), true);
         foreach (var item in replaceForEmpty) vr = vr.Replace(item, string.Empty);
         if (removeEndingPairCharsWhenDontHaveStarting)
-            vr = SH.RemoveEndingPairCharsWhenDontHaveStarting(vr, AllStrings.lcub, AllStrings.rcub);
+            vr = SH.RemoveEndingPairCharsWhenDontHaveStarting(vr, "{", "}");
         return vr;
     }
 
@@ -246,9 +247,10 @@ public class SHReplace //: SHData
 
     public static string ReplaceAllWhitecharsForSpace(string c)
     {
-        foreach (var item in AllChars.whiteSpacesChars)
-            if (item != AllChars.space)
-                c = c.Replace(item, AllChars.space);
+        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
+        foreach (var item in whitespaceChar.whiteSpaceChars)
+            if (item != ' ')
+                c = c.Replace(item, ' ');
         return c;
     }
 
@@ -271,7 +273,7 @@ public class SHReplace //: SHData
 
     public static string ReplaceVariables(string innerHtml, List<List<string>> _dataBinding, int actualRow)
     {
-        return ReplaceVariables(AllChars.lcub, AllChars.rcub, innerHtml, _dataBinding, actualRow);
+        return ReplaceVariables('{', '}', innerHtml, _dataBinding, actualRow);
     }
 
     public static string ReplaceAllDnArgs(string input, string v1, string v2)
@@ -408,7 +410,9 @@ public class SHReplace //: SHData
             text = text.Replace("&nbsp;", " ");
         }
 
-        var p = SHSplit.SplitMore(text, AllChars.whiteSpacesChars.ConvertAll(d => d.ToString()).ToArray());
+        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
+
+        var p = SHSplit.SplitMore(text, whitespaceChar.whiteSpaceChars.ConvertAll(d => d.ToString()).ToArray());
         return string.Join(" ", p);
     }
 
@@ -422,7 +426,7 @@ public class SHReplace //: SHData
         foreach (var item in co)
             if (zaCo.Contains(item))
                 throw new Exception("Nahrazovan\u00FD prvek " + item + " je prvkem j\u00EDm\u017E se nahrazuje  " +
-                                    zaCo + AllStrings.dot);
+                                    zaCo + ".");
         for (var i = 0; i < co.Length; i++) vr = Regex.Replace(vr, co[i], zaCo, RegexOptions.IgnoreCase);
         return vr;
     }
@@ -446,7 +450,7 @@ public class SHReplace //: SHData
     public static string ReplaceWhiteSpaces(string p, string replaceWith)
     {
         var replaced = ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(p, replaceWith);
-        return Replace(replaced, AllStrings.space, replaceWith, true);
+        return Replace(replaced, "", replaceWith, true);
     }
 
     /// <summary>
@@ -517,6 +521,8 @@ public class SHReplace //: SHData
     public static string ReplaceAll3(IList<string> replaceFrom, IList<string> replaceTo,
         bool isMultilineWithVariousIndent, string content)
     {
+        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
+
         if (isMultilineWithVariousIndent)
             for (var i = 0; i < replaceFrom.Count; i++)
             {
@@ -525,8 +531,8 @@ public class SHReplace //: SHData
                 porovnat zaměněné a originál - namapovat co je mezi nimi
                 */
                 var replaceFromDxWithoutEmptyElements =
-                    replaceFrom[i].Split(AllChars.whiteSpacesChars.ToArray()).ToList();
-                var contentWithoutEmptyElements = content.Split(AllChars.whiteSpacesChars.ToArray()).ToList();
+                    replaceFrom[i].Split(whitespaceChar.whiteSpaceChars.ToArray()).ToList();
+                var contentWithoutEmptyElements = content.Split(whitespaceChar.whiteSpaceChars.ToArray()).ToList();
                 ////DebugLogger.Instance.WriteNumberedList("", contentOneSpace, true);
                 // get indexes
                 var equalRanges = CAG.EqualRanges(contentWithoutEmptyElements, replaceFromDxWithoutEmptyElements);
@@ -588,7 +594,7 @@ public class SHReplace //: SHData
         sb.Clear();
         t = t.Trim();
         // jen zde protože jestli něco dělám přes ts tak to dělám na rychlost a to už musí být tohohle zbavené
-        t = t.TrimEnd(AllChars.qm, AllChars.apos);
+        t = t.TrimEnd('"', '\'');
         sb.Append(t);
         return ReplaceTypedWhitespacesForNormal(sb, quote, t24, bs).ToString();
     }
@@ -622,7 +628,7 @@ public class SHReplace //: SHData
                 foreach (var item in occ)
                 {
                     var after = l[lineFromOne - 1][item + what.Length];
-                    if (after == AllChars.comma || after == AllChars.space)
+                    if (after == ',' || after == ' ')
                     {
                         var s = l[lineFromOne - 1];
                         s = s.Remove(item, what.Length);

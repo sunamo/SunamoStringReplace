@@ -16,7 +16,7 @@ internal class CA
         return l;
     }
 
-    internal static void InitFillWith(List<string> datas, int pocet, string initWith = Consts.stringEmpty)
+    internal static void InitFillWith(List<string> datas, int pocet, string initWith = "")
     {
         InitFillWith<string>(datas, pocet, initWith);
     }
