@@ -20,8 +20,8 @@ public class SHReplace //: SHData
             text = text.Replace("&nbsp;", " ");
         }
 
-        while (text.Contains(""))
-            text = ReplaceAll2(text, "", "");
+        while (text.Contains("  "))
+            text = ReplaceAll2(text, " ", "  ");
         // Here it was cycling, dont know why, therefore without while
         //while (text.Contains("space160 + space"))
         //{
@@ -43,7 +43,7 @@ public class SHReplace //: SHData
                 s[i] = ReplaceAll(s[i], "", "\r", @"\n", Environment.NewLine);
         if (moreSpacesForOne)
             for (var i = 0; i < s.Count; i++)
-                s[i] = ReplaceAll2(s[i], "", "");
+                s[i] = ReplaceAll2(s[i], " ", "");
         if (_trim) s = s.ConvertAll(d => d.Trim());
         if (escapeQuoations)
         {
@@ -96,9 +96,9 @@ public class SHReplace //: SHData
         return ReplaceWhiteSpaces(p).Trim();
     }
 
-    public static string ReplaceWhiteSpacesWithoutSpaces(string p)
+    public static string ReplaceWhiteSpacesWithoutSpaces(string p, string replaceWith)
     {
-        return ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(p);
+        return ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(p, replaceWith);
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public class SHReplace //: SHData
     /// <param name="p"></param>
     /// <param name="replaceWith"></param>
     /// <returns></returns>
-    public static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith = "")
+    public static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith)
     {
         return p.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
     }

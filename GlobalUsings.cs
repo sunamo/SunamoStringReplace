@@ -16,3 +16,7 @@ global using SunamoStringReplace._sunamo.SunamoExceptions;
 global using System.Reflection;
 global using System.Net;
 global using System.Diagnostics.CodeAnalysis;
+global using SunamoStringReplace;
+global using SunamoStringReplace._sunamo.SunamoStringData;
+global using SunamoStringReplace._sunamo.SunamoEnums.Enums;
+global using SunamoStringReplace._sunamo.SunamoValues.Constants;

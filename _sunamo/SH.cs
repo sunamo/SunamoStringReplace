@@ -13,9 +13,7 @@ internal class SH
             // 32 space
             var ch = subs[0];
             var ch2 = co[0];
-            if (subs == "")
-            {
-            }
+
 
             if (subs == co)
                 Results.Add(Index);
@@ -112,7 +110,7 @@ internal class SH
     internal static string NullToStringOrDefault(object n)
     {
         //return NullToStringOrDefault(n, null);
-        return n == null ? " " + "(null)" : "" + n;
+        return n == null ? " " + "(null)" : " " + n;
     }
 
     /// <summary>
