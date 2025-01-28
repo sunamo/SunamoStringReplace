@@ -2,8 +2,6 @@ namespace SunamoStringReplace._sunamo.SunamoExceptions;
 internal partial class ThrowEx
 {
 
-    internal static bool Custom(Exception ex, bool reallyThrow = true)
-    { return Custom(Exceptions.TextOfExceptions(ex), reallyThrow); }
 
     internal static bool Custom(string message, bool reallyThrow = true, string secondMessage = "")
     {
@@ -15,11 +13,6 @@ internal partial class ThrowEx
     {
         return ThrowIsNotNull(
             Exceptions.DifferentCountInLists(FullNameOfExecutedCode(), namefc, countfc.Count, namesc, countsc.Count));
-    }
-    internal static bool DifferentCountInLists(string namefc, int countfc, string namesc, int countsc)
-    {
-        return ThrowIsNotNull(
-            Exceptions.DifferentCountInLists(FullNameOfExecutedCode(), namefc, countfc, namesc, countsc));
     }
 
     internal static bool IsNullOrEmpty(string argName, string argValue)
@@ -86,27 +79,8 @@ internal partial class ThrowEx
     }
 
     #region For avoid FullNameOfExecutedCode
-    internal static bool ThrowIsNotNull(Exception exception, bool reallyThrow = true)
-    {
-        if (exception != null)
-        {
-            ThrowIsNotNull(exception.Message, reallyThrow);
-            return false;
-        }
-        return true;
-    }
 
-    internal static bool ThrowIsNotNull<A, B>(Func<string, A, B, string?> f, A ex, B message)
-    {
-        string? exc = f(FullNameOfExecutedCode(), ex, message);
-        return ThrowIsNotNull(exc);
-    }
 
-    internal static bool ThrowIsNotNull<A>(Func<string, A, string?> f, A ex)
-    {
-        string? exc = f(FullNameOfExecutedCode(), ex);
-        return ThrowIsNotNull(exc);
-    }
 
     internal static bool ThrowIsNotNull(Func<string, string?> f)
     {

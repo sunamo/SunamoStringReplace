@@ -7,10 +7,6 @@ internal class SHSplit
     }
 
 
-    internal static List<string> SplitCharMore(string parametry, char deli)
-    {
-        return SplitMore(StringSplitOptions.RemoveEmptyEntries, parametry, CATo.ToListString(deli).ToArray());
-    }
 
     internal static List<string> SplitMore(StringSplitOptions stringSplitOptions, string text, params string[] deli)
     {
