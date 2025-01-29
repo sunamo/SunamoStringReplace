@@ -15,8 +15,6 @@ internal partial class ThrowEx
             Exceptions.DifferentCountInLists(FullNameOfExecutedCode(), namefc, countfc.Count, namesc, countsc.Count));
     }
 
-    internal static bool IsNullOrEmpty(string argName, string argValue)
-    { return ThrowIsNotNull(Exceptions.IsNullOrWhitespace(FullNameOfExecutedCode(), argName, argValue, true)); }
 
     internal static bool IsTheSame(string fst, string sec)
     { return ThrowIsNotNull(Exceptions.IsTheSame(FullNameOfExecutedCode(), fst, sec)); }
