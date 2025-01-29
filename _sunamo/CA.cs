@@ -10,9 +10,5 @@ internal class CA
     }
 
 
-    internal static void InitFillWith<T>(List<T> datas, int pocet, T initWith)
-    {
-        for (var i = 0; i < pocet; i++) datas.Add(initWith);
-    }
 
 }
