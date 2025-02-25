@@ -321,11 +321,6 @@ public class SHReplace //: SHData
         return vstup;
     }
 
-    public static string Replace(string t, string what, string forWhat)
-    {
-        return Replace(t, what, forWhat, false);
-    }
-
     /// <summary>
     ///     Use simple c# replace
     ///     18-5-2023
@@ -335,8 +330,18 @@ public class SHReplace //: SHData
     /// <param name="t"></param>
     /// <param name="what"></param>
     /// <param name="forWhat"></param>
-    public static string Replace(string t, string what, string forWhat, bool a2CanBeAsA3 = false)
+    public static string Replace(string t, string what, string forWhat, bool a2CanBeAsA3 = false, bool throwExIfNotContains = false)
     {
+        if (string.IsNullOrEmpty(forWhat))
+        {
+            throw new ArgumentException($"{what} is null or empty!");
+        }
+
+        if (!t.Contains(what) && throwExIfNotContains)
+        {
+            throw new Exception($"{t} not contains {what}");
+        }
+
         if (what == forWhat)
         {
             if (a2CanBeAsA3)
