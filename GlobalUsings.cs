@@ -20,7 +20,6 @@ global using SunamoStringReplace;
 global using SunamoStringReplace._sunamo.SunamoStringData;
 global using SunamoStringReplace._sunamo.SunamoEnums.Enums;
 global using SunamoStringReplace._sunamo.SunamoValues.Constants;
-
 global using ILogger = Microsoft.Extensions.Logging.ILogger;
 global using Microsoft.Extensions.Logging;
 global using NullLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger;
