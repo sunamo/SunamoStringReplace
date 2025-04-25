@@ -178,8 +178,8 @@ public class SHReplace //: SHData
     {
         if (pairLines)
         {
-            var from2 = SHSplit.SplitMore(co, Environment.NewLine);
-            var to2 = SHSplit.SplitMore(zaCo, Environment.NewLine);
+            var from2 = SHSplit.Split(co, Environment.NewLine);
+            var to2 = SHSplit.Split(zaCo, Environment.NewLine);
             ThrowEx.DifferentCountInLists("from2", from2, "to2", to2);
             for (var i = 0; i < from2.Count; i++) vstup = ReplaceAll2(vstup, to2[i], from2[i]);
             return vstup;
@@ -211,7 +211,7 @@ public class SHReplace //: SHData
         {
             // Must be split, not splitNone
             // 'ReplaceInAllFiles:  Different count elements in collection from2 - 4 vs. to2 - 3'
-            var p = SHSplit.SplitMore(item, delimiter);
+            var p = SHSplit.Split(item, delimiter);
             if (p.Count == 1)
                 if (item.EndsWith(delimiter))
                 {
@@ -355,7 +355,7 @@ public class SHReplace //: SHData
 
     public static string ReplaceLastOccurenceOfString(string text, string co, string čím)
     {
-        var roz = SHSplit.SplitMore(text, co);
+        var roz = SHSplit.Split(text, co);
         if (roz.Count == 1) return text.Replace(co, čím);
 
         var sb = new StringBuilder();
@@ -417,7 +417,7 @@ public class SHReplace //: SHData
 
         WhitespaceCharService whitespaceChar = new WhitespaceCharService();
 
-        var p = SHSplit.SplitMore(text, whitespaceChar.whiteSpaceChars.ConvertAll(d => d.ToString()).ToArray());
+        var p = SHSplit.Split(text, whitespaceChar.whiteSpaceChars.ConvertAll(d => d.ToString()).ToArray());
         return string.Join(" ", p);
     }
 
@@ -472,7 +472,7 @@ public class SHReplace //: SHData
         var l = SHGetLines.GetLines(v);
         foreach (var item in l)
         {
-            var p = SHSplit.SplitMore(item, delimiter);
+            var p = SHSplit.Split(item, delimiter);
             p = p.ConvertAll(d => d.Trim());
             string from, to;
             from = to = null;
