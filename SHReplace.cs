@@ -240,10 +240,10 @@ public class SHReplace //: SHData
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <returns></returns>
-    public static string PrepareForReplaceMany(List<string> from, List<string> to)
-    {
-        return null;
-    }
+    //public static string PrepareForReplaceMany(List<string> from, List<string> to)
+    //{
+    //    return null;
+    //}
 
     public static string ReplaceAllWhitecharsForSpace(string c)
     {
@@ -388,8 +388,8 @@ public class SHReplace //: SHData
         return text;
     }
 
-    public static string ReplaceSecondAndNextOccurencesOfStringFrom(string vcem2, string co, string zaCo,
-        int overallCountOfA2)
+    public static string ReplaceSecondAndNextOccurencesOfStringFrom(string vcem2, string co, string zaCo/*,
+        int overallCountOfA2*/)
     {
         var r = new Regex(co);
         //StringBuilder vcem = new StringBuilder(vcem2);
