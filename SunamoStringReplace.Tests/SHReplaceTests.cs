@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoStringReplace.Tests;
 
 public class SHReplaceTests
@@ -5,10 +8,10 @@ public class SHReplaceTests
     [Fact]
     public async Task ReplaceAll()
     {
-        var c = await File.ReadAllTextAsync(@"E:\vs\Projects\ConsoleApp1\ConsoleApp1\ConsoleApp1Research\GoogleSheets\Generate\Files.cs");
-        c = "logger, " + "logger\n" + c;
+        var count = await File.ReadAllTextAsync(@"E:\vs\Projects\ConsoleApp1\ConsoleApp1\ConsoleApp1Research\GoogleSheets\Generate\Files.cs");
+        count = "logger, " + "logger\n" + count;
 
-        c = SHReplace.ReplaceAll(c, "logger", "logger, " + "logger");
+        count = SHReplace.ReplaceAll(count, "logger", "logger, " + "logger");
 
 
     }

@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoStringReplace._sunamo;
 
 internal class SH
@@ -36,7 +39,7 @@ internal class SH
     internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft,
         ref List<int> onlyRight)
     {
-        var l = new List<Tuple<int, int>>();
+        var list = new List<Tuple<int, int>>();
         onlyLeft = occL.ToList();
         onlyRight = occR.ToList();
         for (var i = occR.Count - 1; i >= 0; i--)
@@ -55,37 +58,37 @@ internal class SH
             else
             {
                 // když je lastLeft menší, znamená to že last right má svůj levý protějšek
-                l.Add(new Tuple<int, int>(lastLeft, lastRight));
+                list.Add(new Tuple<int, int>(lastLeft, lastRight));
             }
         }
 
         occL = onlyLeft;
-        //foreach (var item in l)
+        //foreach (var item in list)
         //{
         //    occL.Remove(item.Item1);
         //}
         // occL = onlyLeft o pár řádků výše
         //onlyLeft.AddRange(occL);
-        //l.Reverse();
+        //list.Reverse();
         var addToAnotherCollection = new List<int>();
         var l2 = new List<Tuple<int, int>>();
         var alreadyProcessedItem1 = new List<int>();
-        for (var i = l.Count - 1; i >= 0; i--)
+        for (var i = list.Count - 1; i >= 0; i--)
         {
-            if (alreadyProcessedItem1.Contains(l[i].Item1))
+            if (alreadyProcessedItem1.Contains(list[i].Item1))
             {
-                addToAnotherCollection.Add(l[i].Item1);
-                l2.Add(l[i]);
-                l.RemoveAt(i);
+                addToAnotherCollection.Add(list[i].Item1);
+                l2.Add(list[i]);
+                list.RemoveAt(i);
                 //continue;
             }
 
-            alreadyProcessedItem1.Add(l[i].Item1);
+            alreadyProcessedItem1.Add(list[i].Item1);
         }
 
         //for (int i = l2.Count - 1; i >= 0; i--)
         //{
-        //    if (l.Contains(l2[i]))
+        //    if (list.Contains(l2[i]))
         //    {
         //        l2.RemoveAt(i);
         //    }
@@ -105,19 +108,19 @@ internal class SH
                 var dx2 = occL.IndexOf(sele[0].Item1);
                 if (dx2 != -1)
                 {
-                    var dx3 = l.IndexOf(sele[0]);
-                    l.Add(new Tuple<int, int>(occL[dx2 - 1], sele[0].Item2));
+                    var dx3 = list.IndexOf(sele[0]);
+                    list.Add(new Tuple<int, int>(occL[dx2 - 1], sele[0].Item2));
                 }
             }
         }
 
-        //l.AddRange(l2);
+        //list.AddRange(l2);
         occL.Sort();
-        var result = l; //l.OrderByDescending(d => d.Item1).ToList();
+        var result = list; //list.OrderByDescending(d => d.Item1).ToList();
         //
         var alreadyProcessed = new List<int>();
         var dx = -1;
-        for (var y = 0; y < result.Count; y++)
+        for (var yValue = 0; yValue < result.Count; yValue++)
         {
             var item = result[y];
             var i = item.Item1;
@@ -151,15 +154,15 @@ internal class SH
     internal static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
     {
         var removeOnIndexes = new List<int>();
-        var sb = new StringBuilder(vr);
+        var stringBuilder = new StringBuilder(vr);
         var occL = ReturnOccurencesOfString(vr, cbl);
         var occR = ReturnOccurencesOfString(vr, cbr);
         List<int> onlyLeft = null;
         List<int> onlyRight = null;
-        var l = GetPairsStartAndEnd(occL, occR, ref onlyLeft, ref onlyRight);
+        var list = GetPairsStartAndEnd(occL, occR, ref onlyLeft, ref onlyRight);
         onlyLeft.AddRange(onlyRight);
         onlyLeft.Sort();
-        for (var i = onlyLeft.Count - 1; i >= 0; i--) sb.Remove(onlyLeft[i], 1);
+        for (var i = onlyLeft.Count - 1; i >= 0; i--) stringBuilder.Remove(onlyLeft[i], 1);
         //if (occL.Count == 0)
         //{
         //    result = vr.SHReplace.Replace("}", string.Empty);
@@ -194,13 +197,13 @@ internal class SH
         //            occR.RemoveAt(0);
         //        }
         //    }
-        //    StringBuilder sb = new StringBuilder(vr);
+        //    StringBuilder stringBuilder = new StringBuilder(vr);
         //    for (int i = removeOnIndexes.Count - 1; i >= 0; i--)
         //    {
         //        vr.Remove(removeOnIndexes[i], 1);
         //    }
         //    result = vr.ToLower();
         //}
-        return sb.ToString();
+        return stringBuilder.ToString();
     }
 }

@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoStringReplace._sunamo.SunamoData.Data;
 
 internal class FromToTSHStringReplace<T>
@@ -9,8 +12,8 @@ internal class FromToTSHStringReplace<T>
 
     internal FromToTSHStringReplace()
     {
-        var t = typeof(T);
-        if (t == typeof(int)) ftUse = FromToUseStringReplace.None;
+        var type = typeof(type);
+        if (type == typeof(int)) ftUse = FromToUseStringReplace.None;
     }
 
     /// <summary>
@@ -29,7 +32,7 @@ internal class FromToTSHStringReplace<T>
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="ftUse"></param>
-    internal FromToTSHStringReplace(T from, T to, FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime) :
+    internal FromToTSHStringReplace(type from, type to, FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime) :
         this()
     {
         this.from = from;
@@ -37,15 +40,15 @@ internal class FromToTSHStringReplace<T>
         this.ftUse = ftUse;
     }
 
-    internal T from
+    internal type from
     {
-        get => (T)(dynamic)fromL;
+        get => (type)(dynamic)fromL;
         set => fromL = (long)(dynamic)value;
     }
 
-    internal T to
+    internal type to
     {
-        get => (T)(dynamic)toL;
+        get => (type)(dynamic)toL;
         set => toL = (long)(dynamic)value;
     }
 
