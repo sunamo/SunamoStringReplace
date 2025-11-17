@@ -90,7 +90,7 @@ public class SHReplace //: SHData
     public static string ReplaceWhitespaces(string text, string forWhat)
     {
         WhitespaceCharService whitespaceChar = new WhitespaceCharService();
-        foreach (var item in whitespaceChar.whiteSpaceChars) text = text.Replace(item.ToString(), forWhat);
+        foreach (var value in whitespaceChar.whiteSpaceChars) text = text.Replace(value.ToString(), forWhat);
         return text;
     }
 
@@ -193,10 +193,10 @@ public class SHReplace //: SHData
 
     public static StringBuilder ReplaceAllSb(StringBuilder stringBuilder, string zaCo, params string[] co)
     {
-        foreach (var item in co)
+        foreach (var oldValue in co)
         {
-            if (item == zaCo) continue;
-            stringBuilder = stringBuilder.Replace(item, zaCo);
+            if (oldValue == zaCo) continue;
+            stringBuilder = stringBuilder.Replace(oldValue, zaCo);
         }
 
         return stringBuilder;
@@ -210,13 +210,13 @@ public class SHReplace //: SHData
         list = list.Where(d => d.Trim() != string.Empty).ToList();
         var delimiter = "->";
         var replaceForEmpty = new List<string>();
-        foreach (var item in list)
+        foreach (var mappingLine in list)
         {
             // Must be split, not splitNone
             // 'ReplaceInAllFiles:  Different count elements in collection from2 - 4 vs. to2 - 3'
-            var parameter = SHSplit.Split(item, delimiter);
+            var parameter = SHSplit.Split(mappingLine, delimiter);
             if (parameter.Count == 1)
-                if (item.EndsWith(delimiter))
+                if (mappingLine.EndsWith(delimiter))
                 {
                     replaceForEmpty.Add(parameter[0]);
                     continue;
@@ -229,7 +229,7 @@ public class SHReplace //: SHData
         }
 
         var vr = ReplaceAll2(input, to.ToString(), from.ToString(), true);
-        foreach (var item in replaceForEmpty) vr = vr.Replace(item, string.Empty);
+        foreach (var oldValue in replaceForEmpty) vr = vr.Replace(oldValue, string.Empty);
         if (removeEndingPairCharsWhenDontHaveStarting)
             vr = SH.RemoveEndingPairCharsWhenDontHaveStarting(vr, "{", "}");
         return vr;
@@ -251,9 +251,9 @@ public class SHReplace //: SHData
     public static string ReplaceAllWhitecharsForSpace(string count)
     {
         WhitespaceCharService whitespaceChar = new WhitespaceCharService();
-        foreach (var item in whitespaceChar.whiteSpaceChars)
-            if (item != ' ')
-                count = count.Replace(item, ' ');
+        foreach (var value in whitespaceChar.whiteSpaceChars)
+            if (value != ' ')
+                count = count.Replace(value, ' ');
         return count;
     }
 
@@ -516,7 +516,7 @@ public class SHReplace //: SHData
         if (list[0] == from)
             list[0] = to;
         else
-            throw new Exception($"First line is not excepted '{from}', was '{l[0]}'");
+            throw new Exception($"First line is not excepted '{from}', was '{list[0]}'");
         return string.Join("\n", list);
     }
 

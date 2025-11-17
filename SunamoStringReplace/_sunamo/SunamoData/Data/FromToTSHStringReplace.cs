@@ -12,8 +12,8 @@ internal class FromToTSHStringReplace<T>
 
     internal FromToTSHStringReplace()
     {
-        var type = typeof(type);
-        if (type == typeof(int)) ftUse = FromToUseStringReplace.None;
+        var genericType = typeof(T);
+        if (genericType == typeof(int)) ftUse = FromToUseStringReplace.None;
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ internal class FromToTSHStringReplace<T>
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="ftUse"></param>
-    internal FromToTSHStringReplace(type from, type to, FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime) :
+    internal FromToTSHStringReplace(T from, T to, FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime) :
         this()
     {
         this.from = from;
@@ -40,15 +40,15 @@ internal class FromToTSHStringReplace<T>
         this.ftUse = ftUse;
     }
 
-    internal type from
+    internal T from
     {
-        get => (type)(dynamic)fromL;
+        get => (T)(dynamic)fromL;
         set => fromL = (long)(dynamic)value;
     }
 
-    internal type to
+    internal T to
     {
-        get => (type)(dynamic)toL;
+        get => (T)(dynamic)toL;
         set => toL = (long)(dynamic)value;
     }
 

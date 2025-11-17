@@ -122,7 +122,7 @@ internal class SH
         var dx = -1;
         for (var yValue = 0; yValue < result.Count; yValue++)
         {
-            var item = result[y];
+            var item = result[yValue];
             var i = item.Item1;
             if (alreadyProcessed.Contains(i))
             {
@@ -130,7 +130,7 @@ internal class SH
                 if (dx != -1)
                 {
                     i = occL[dx - 1];
-                    result[i] = new Tuple<int, int>(i, result[y - 1].Item2);
+                    result[i] = new Tuple<int, int>(i, result[yValue - 1].Item2);
                 }
             }
 
