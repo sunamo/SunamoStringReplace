@@ -1,54 +1,88 @@
 namespace SunamoStringReplace._sunamo.SunamoData.Data;
 
+/// <summary>
+/// Base class representing a from-to range with generic type support.
+/// </summary>
+/// <typeparam name="T">The type of the range values.</typeparam>
 internal class FromToTSHStringReplace<T>
 {
-    internal bool empty;
-    protected long fromL;
-    internal FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime;
-    protected long toL;
+    /// <summary>
+    /// Whether this instance represents an empty range.
+    /// </summary>
+    internal bool IsEmpty { get; set; }
 
+    /// <summary>
+    /// The backing field for the From value stored as long.
+    /// </summary>
+    protected long fromLong;
+
+    /// <summary>
+    /// The intended use of this from-to range.
+    /// </summary>
+    internal FromToUseStringReplace FromToUse { get; set; } = FromToUseStringReplace.DateTime;
+
+    /// <summary>
+    /// The backing field for the To value stored as long.
+    /// </summary>
+    protected long toLong;
+
+    /// <summary>
+    /// Initializes a new empty instance and sets the default FromToUse based on the generic type.
+    /// </summary>
     internal FromToTSHStringReplace()
     {
         var genericType = typeof(T);
-        if (genericType == typeof(int)) ftUse = FromToUseStringReplace.None;
+        if (genericType == typeof(int)) FromToUse = FromToUseStringReplace.None;
     }
 
     /// <summary>
-    ///     Use Empty contstant outside of class
+    /// Initializes a new empty instance. Use the Empty constant outside of class.
     /// </summary>
-    /// <param name="empty"></param>
-    private FromToTSHStringReplace(bool empty) : this()
+    /// <param name="isEmpty">Marks this instance as empty.</param>
+    private FromToTSHStringReplace(bool isEmpty) : this()
     {
-        this.empty = empty;
+        this.IsEmpty = isEmpty;
     }
 
     /// <summary>
-    ///     A3 true = DateTime
-    ///     A3 False = None
+    /// Initializes a new instance with from and to values.
     /// </summary>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="ftUse"></param>
-    internal FromToTSHStringReplace(T from, T to, FromToUseStringReplace ftUse = FromToUseStringReplace.DateTime) :
+    /// <param name="from">The start value of the range.</param>
+    /// <param name="to">The end value of the range.</param>
+    /// <param name="fromToUse">The intended use type (default: DateTime).</param>
+    internal FromToTSHStringReplace(T from, T to, FromToUseStringReplace fromToUse = FromToUseStringReplace.DateTime) :
         this()
     {
-        this.from = from;
-        this.to = to;
-        this.ftUse = ftUse;
+        this.From = from;
+        this.To = to;
+        this.FromToUse = fromToUse;
     }
 
-    internal T from
+    /// <summary>
+    /// The start value of the range.
+    /// </summary>
+    internal T From
     {
-        get => (T)(dynamic)fromL;
-        set => fromL = (long)(dynamic)value;
+        get => (T)(dynamic)fromLong!;
+        set => fromLong = (long)(dynamic)value!;
     }
 
-    internal T to
+    /// <summary>
+    /// The end value of the range.
+    /// </summary>
+    internal T To
     {
-        get => (T)(dynamic)toL;
-        set => toL = (long)(dynamic)value;
+        get => (T)(dynamic)toLong!;
+        set => toLong = (long)(dynamic)value!;
     }
 
-    internal long FromL => fromL;
-    internal long ToL => toL;
+    /// <summary>
+    /// The start value as a long.
+    /// </summary>
+    internal long FromL => fromLong;
+
+    /// <summary>
+    /// The end value as a long.
+    /// </summary>
+    internal long ToL => toLong;
 }

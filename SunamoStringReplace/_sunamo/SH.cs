@@ -1,206 +1,142 @@
 namespace SunamoStringReplace._sunamo;
 
+/// <summary>
+/// Internal string helper class providing utility methods for string operations.
+/// </summary>
 internal class SH
 {
-    internal static List<int> ReturnOccurencesOfString(string vcem, string co)
+    /// <summary>
+    /// Returns all occurrence indexes of a substring within the text.
+    /// </summary>
+    /// <param name="text">The text to search in.</param>
+    /// <param name="what">The substring to search for.</param>
+    /// <returns>A list of indexes where the substring occurs.</returns>
+    internal static List<int> ReturnOccurencesOfString(string text, string what)
     {
-        var Results = new List<int>();
-        for (var Index = 0; Index < vcem.Length - co.Length + 1; Index++)
+        var results = new List<int>();
+        for (var index = 0; index < text.Length - what.Length + 1; index++)
         {
-            var subs = vcem.Substring(Index, co.Length);
-            ////////DebugLogger.Instance.WriteLine(subs);
-            // non-breaking space. &nbsp; code 160
-            // 32 space
-            var ch = subs[0];
-            var ch2 = co[0];
-
-
-            if (subs == co)
-                Results.Add(Index);
+            var substring = text.Substring(index, what.Length);
+            if (substring == what)
+                results.Add(index);
         }
 
-        return Results;
+        return results;
     }
 
-
-
-
-    
-    
-
-
-    
-    
-    
-
-    internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> occL, List<int> occR, ref List<int> onlyLeft,
-        ref List<int> onlyRight)
+    /// <summary>
+    /// Gets pairs of matching start and end indexes from two lists of bracket positions.
+    /// </summary>
+    /// <param name="leftOccurrences">Indexes of left bracket occurrences.</param>
+    /// <param name="rightOccurrences">Indexes of right bracket occurrences.</param>
+    /// <param name="unmatchedLeft">Unmatched left bracket indexes.</param>
+    /// <param name="unmatchedRight">Unmatched right bracket indexes.</param>
+    /// <returns>A list of matched start-end index pairs.</returns>
+    internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> leftOccurrences, List<int> rightOccurrences, ref List<int> unmatchedLeft,
+        ref List<int> unmatchedRight)
     {
-        var list = new List<Tuple<int, int>>();
-        onlyLeft = occL.ToList();
-        onlyRight = occR.ToList();
-        for (var i = occR.Count - 1; i >= 0; i--)
+        var pairs = new List<Tuple<int, int>>();
+        unmatchedLeft = leftOccurrences.ToList();
+        unmatchedRight = rightOccurrences.ToList();
+        for (var i = rightOccurrences.Count - 1; i >= 0; i--)
         {
-            var lastRight = occR[i];
-            if (occL.Count == 0) break;
-            var lastLeft = occL.Last();
+            var lastRight = rightOccurrences[i];
+            if (leftOccurrences.Count == 0) break;
+            var lastLeft = leftOccurrences.Last();
             if (lastRight < lastLeft)
             {
                 i++;
-                // Na konci přebývá lastLeft
-                // onlyLeft.Add(lastLeft);
-                // I will remove it on end
-                occL.RemoveAt(occL.Count - 1);
+                leftOccurrences.RemoveAt(leftOccurrences.Count - 1);
             }
             else
             {
-                // když je lastLeft menší, znamená to že last right má svůj levý protějšek
-                list.Add(new Tuple<int, int>(lastLeft, lastRight));
+                pairs.Add(new Tuple<int, int>(lastLeft, lastRight));
             }
         }
 
-        occL = onlyLeft;
-        //foreach (var item in list)
-        //{
-        //    occL.Remove(item.Item1);
-        //}
-        // occL = onlyLeft o pár řádků výše
-        //onlyLeft.AddRange(occL);
-        //list.Reverse();
-        var addToAnotherCollection = new List<int>();
-        var l2 = new List<Tuple<int, int>>();
-        var alreadyProcessedItem1 = new List<int>();
-        for (var i = list.Count - 1; i >= 0; i--)
+        leftOccurrences = unmatchedLeft;
+        var duplicateLeftIndexes = new List<int>();
+        var duplicatePairs = new List<Tuple<int, int>>();
+        var processedLeftValues = new List<int>();
+        for (var i = pairs.Count - 1; i >= 0; i--)
         {
-            if (alreadyProcessedItem1.Contains(list[i].Item1))
+            if (processedLeftValues.Contains(pairs[i].Item1))
             {
-                addToAnotherCollection.Add(list[i].Item1);
-                l2.Add(list[i]);
-                list.RemoveAt(i);
-                //continue;
+                duplicateLeftIndexes.Add(pairs[i].Item1);
+                duplicatePairs.Add(pairs[i]);
+                pairs.RemoveAt(i);
             }
 
-            alreadyProcessedItem1.Add(list[i].Item1);
+            processedLeftValues.Add(pairs[i].Item1);
         }
 
-        //for (int i = l2.Count - 1; i >= 0; i--)
-        //{
-        //    if (list.Contains(l2[i]))
-        //    {
-        //        l2.RemoveAt(i);
-        //    }
-        //}
-        addToAnotherCollection = addToAnotherCollection.Distinct().ToList();
-        foreach (var item in addToAnotherCollection)
+        duplicateLeftIndexes = duplicateLeftIndexes.Distinct().ToList();
+        foreach (var duplicateIndex in duplicateLeftIndexes)
         {
-            var count = alreadyProcessedItem1.Where(d => d == item).Count();
-            //!alreadyProcessedItem1.Contains(item)
-            if (count > 2)
+            var matchCount = processedLeftValues.Where(processed => processed == duplicateIndex).Count();
+            if (matchCount > 2)
             {
-                var sele = l2.Where(d => d.Item1 == item).ToList();
-                //for (int i = sele.Count() - 1; i >= 1; i--)
-                //{
-                //    l2.Remove(sele[i]);
-                //}
-                var dx2 = occL.IndexOf(sele[0].Item1);
-                if (dx2 != -1)
+                var selectedPairs = duplicatePairs.Where(pair => pair.Item1 == duplicateIndex).ToList();
+                var leftIndex = leftOccurrences.IndexOf(selectedPairs[0].Item1);
+                if (leftIndex != -1)
                 {
-                    var dx3 = list.IndexOf(sele[0]);
-                    list.Add(new Tuple<int, int>(occL[dx2 - 1], sele[0].Item2));
+                    pairs.Add(new Tuple<int, int>(leftOccurrences[leftIndex - 1], selectedPairs[0].Item2));
                 }
             }
         }
 
-        //list.AddRange(l2);
-        occL.Sort();
-        var result = list; //list.OrderByDescending(d => d.Item1).ToList();
-        //
-        var alreadyProcessed = new List<int>();
-        var dx = -1;
-        for (var yValue = 0; yValue < result.Count; yValue++)
+        leftOccurrences.Sort();
+        var result = pairs;
+        var processedValues = new List<int>();
+        var currentIndex = -1;
+        for (var pairIndex = 0; pairIndex < result.Count; pairIndex++)
         {
-            var item = result[yValue];
-            var i = item.Item1;
-            if (alreadyProcessed.Contains(i))
+            var pair = result[pairIndex];
+            var leftValue = pair.Item1;
+            if (processedValues.Contains(leftValue))
             {
-                dx = occL.IndexOf(i);
-                if (dx != -1)
+                currentIndex = leftOccurrences.IndexOf(leftValue);
+                if (currentIndex != -1)
                 {
-                    i = occL[dx - 1];
-                    result[i] = new Tuple<int, int>(i, result[yValue - 1].Item2);
+                    leftValue = leftOccurrences[currentIndex - 1];
+                    result[leftValue] = new Tuple<int, int>(leftValue, result[pairIndex - 1].Item2);
                 }
             }
 
-            alreadyProcessed.Add(i);
+            processedValues.Add(leftValue);
         }
 
-        onlyLeft = occL;
-        onlyLeft = onlyLeft.Distinct().ToList();
-        onlyRight = onlyRight.Distinct().ToList();
-        foreach (var item in result)
+        unmatchedLeft = leftOccurrences;
+        unmatchedLeft = unmatchedLeft.Distinct().ToList();
+        unmatchedRight = unmatchedRight.Distinct().ToList();
+        foreach (var pair in result)
         {
-            onlyLeft.Remove(item.Item1);
-            onlyRight.Remove(item.Item2);
+            unmatchedLeft.Remove(pair.Item1);
+            unmatchedRight.Remove(pair.Item2);
         }
 
         result.Reverse();
         return result;
     }
 
-
-    internal static string RemoveEndingPairCharsWhenDontHaveStarting(string vr, string cbl, string cbr)
+    /// <summary>
+    /// Removes unmatched ending pair characters (e.g. closing brackets) that have no corresponding opening character.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="openChar">The opening pair character.</param>
+    /// <param name="closeChar">The closing pair character.</param>
+    /// <returns>The text with unmatched pair characters removed.</returns>
+    internal static string RemoveEndingPairCharsWhenDontHaveStarting(string text, string openChar, string closeChar)
     {
-        var removeOnIndexes = new List<int>();
-        var stringBuilder = new StringBuilder(vr);
-        var occL = ReturnOccurencesOfString(vr, cbl);
-        var occR = ReturnOccurencesOfString(vr, cbr);
-        List<int> onlyLeft = null;
-        List<int> onlyRight = null;
-        var list = GetPairsStartAndEnd(occL, occR, ref onlyLeft, ref onlyRight);
-        onlyLeft.AddRange(onlyRight);
-        onlyLeft.Sort();
-        for (var i = onlyLeft.Count - 1; i >= 0; i--) stringBuilder.Remove(onlyLeft[i], 1);
-        //if (occL.Count == 0)
-        //{
-        //    result = vr.SHReplace.Replace("}", string.Empty);
-        //}
-        //else
-        //{
-        //
-        //    int left = -1;
-        //    int right = -1;
-        //    var onlyLeft = new List<int>();
-        //    var pairs = SH.GetPairsStartAndEnd(occL, occR, ref onlyLeft);
-        //    while (true)
-        //    {
-        //        if (occR.Count == 0)
-        //        {
-        //            break;
-        //        }
-        //        if (occL.Count == 0)
-        //        {
-        //            break;
-        //        }
-        //        left = occL.First();
-        //        right = occR.First();
-        //        if (right > left)
-        //        {
-        //            removeOnIndexes.Add(right);
-        //            occR.RemoveAt(0);
-        //        }
-        //        else
-        //        {
-        //            // right, remove from right
-        //            occR.RemoveAt(0);
-        //        }
-        //    }
-        //    StringBuilder stringBuilder = new StringBuilder(vr);
-        //    for (int i = removeOnIndexes.Count - 1; i >= 0; i--)
-        //    {
-        //        vr.Remove(removeOnIndexes[i], 1);
-        //    }
-        //    result = vr.ToLower();
-        //}
-        return stringBuilder.ToString();
+        var resultBuilder = new StringBuilder(text);
+        var leftOccurrences = ReturnOccurencesOfString(text, openChar);
+        var rightOccurrences = ReturnOccurencesOfString(text, closeChar);
+        List<int> unmatchedLeft = null!;
+        List<int> unmatchedRight = null!;
+        var matchedPairs = GetPairsStartAndEnd(leftOccurrences, rightOccurrences, ref unmatchedLeft, ref unmatchedRight);
+        unmatchedLeft.AddRange(unmatchedRight);
+        unmatchedLeft.Sort();
+        for (var i = unmatchedLeft.Count - 1; i >= 0; i--) resultBuilder.Remove(unmatchedLeft[i], 1);
+        return resultBuilder.ToString();
     }
 }

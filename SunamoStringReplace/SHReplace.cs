@@ -1,20 +1,21 @@
 namespace SunamoStringReplace;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Provides methods for replacing content within strings.
+/// </summary>
 public partial class SHReplace
 {
     private static readonly StringBuilder stringBuilder = new();
+
     /// <summary>
-    ///     Working - see unit tests
+    /// Replaces all double spaces with single spaces in the given text.
     /// </summary>
-    /// <param name = "text"></param>
-    /// <param name = "alsoHtml"></param>
-    /// <returns></returns>
-    public static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
+    /// <param name="text">The text to process.</param>
+    /// <param name="isAlsoReplacingHtml">Whether to also replace HTML non-breaking spaces.</param>
+    /// <returns>The text with all double spaces replaced by single spaces.</returns>
+    public static string ReplaceAllDoubleSpaceToSingle(string text, bool isAlsoReplacingHtml = false)
     {
-        //text = SH.FromSpace160To32(text);
-        if (alsoHtml)
+        if (isAlsoReplacingHtml)
         {
             text = text.Replace(" &nbsp;", " ");
             text = text.Replace("&nbsp; ", " ");
@@ -23,242 +24,295 @@ public partial class SHReplace
 
         while (text.Contains("  "))
             text = ReplaceAll2(text, " ", "  ");
-        // Here it was cycling, dont know why, therefore without while
-        //while (text.Contains("space160 + space"))
-        //{
-        //text = ReplaceAll2(text, "", "space160 + space");
-        //}
-        //while (text.Contains("space + space160"))
-        //{
-        //text = ReplaceAll2(text, "", "space + space160");
-        //}
-        return text;
-    }
-
-    public static List<string> SplitAdvanced(string value, bool replaceNewLineBySpace, bool moreSpacesForOne, bool _trim, bool escapeQuoations, params string[] deli)
-    {
-        var text = value.Split(deli, StringSplitOptions.None).ToList();
-        if (replaceNewLineBySpace)
-            for (var i = 0; i < text.Count; i++)
-                text[i] = ReplaceAll(text[i], "", "\r", @"\n", Environment.NewLine);
-        if (moreSpacesForOne)
-            for (var i = 0; i < text.Count; i++)
-                text[i] = ReplaceAll2(text[i], " ", "");
-        if (_trim)
-            text = text.ConvertAll(d => d.Trim());
-        if (escapeQuoations)
-        {
-            var rep = "\"";
-            for (var i = 0; i < text.Count; i++)
-                text[i] = ReplaceFromEnd(text[i], "\"", rep);
-        //}
-        }
-
         return text;
     }
 
     /// <summary>
-    ///     Working - see unit tests
+    /// Splits a string using advanced options such as replacing newlines, trimming, and escaping quotations.
     /// </summary>
-    /// <param name = "text"></param>
-    /// <returns></returns>
+    /// <param name="text">The text to split.</param>
+    /// <param name="isReplacingNewLineBySpace">Whether to replace newline characters with spaces.</param>
+    /// <param name="isUsingMoreSpacesForOne">Whether to collapse multiple spaces into one.</param>
+    /// <param name="isTrimming">Whether to trim each resulting element.</param>
+    /// <param name="isEscapingQuotations">Whether to escape quotation marks.</param>
+    /// <param name="delimiters">The delimiters to split by.</param>
+    /// <returns>A list of split string elements.</returns>
+    public static List<string> SplitAdvanced(string text, bool isReplacingNewLineBySpace, bool isUsingMoreSpacesForOne, bool isTrimming, bool isEscapingQuotations, params string[] delimiters)
+    {
+        var parts = text.Split(delimiters, StringSplitOptions.None).ToList();
+        if (isReplacingNewLineBySpace)
+            for (var i = 0; i < parts.Count; i++)
+                parts[i] = ReplaceAll(parts[i], "", "\r", @"\n", Environment.NewLine);
+        if (isUsingMoreSpacesForOne)
+            for (var i = 0; i < parts.Count; i++)
+                parts[i] = ReplaceAll2(parts[i], " ", "");
+        if (isTrimming)
+            parts = parts.ConvertAll(element => element.Trim());
+        if (isEscapingQuotations)
+        {
+            var replacement = "\"";
+            for (var i = 0; i < parts.Count; i++)
+                parts[i] = ReplaceFromEnd(parts[i], "\"", replacement);
+        }
+
+        return parts;
+    }
+
+    /// <summary>
+    /// Replaces all double spaces with single spaces in the given text.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <returns>The text with all double spaces replaced by single spaces.</returns>
     public static string ReplaceAllDoubleSpaceToSingle(string text)
     {
         return ReplaceAllDoubleSpaceToSingle(text, false);
     }
 
-    public static string ReplaceRef(ref string resultStatus, string what, string forWhat)
+    /// <summary>
+    /// Replaces occurrences of a search string in the text passed by reference.
+    /// </summary>
+    /// <param name="text">The text to modify, passed by reference.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <returns>The modified text.</returns>
+    public static string ReplaceRef(ref string text, string what, string replacement)
     {
-        resultStatus = resultStatus.Replace(what, forWhat);
-        return resultStatus;
-    }
-
-    public static string ReplaceFromEnd(string text, string zaCo, string co)
-    {
-        var occ = SH.ReturnOccurencesOfString(text, co);
-        for (var i = occ.Count - 1; i >= 0; i--)
-            text = ReplaceByIndex(text, zaCo, occ[i], co.Length);
+        text = text.Replace(what, replacement);
         return text;
     }
 
     /// <summary>
-    ///     Replace AllChars.whiteSpaceChars with A2
+    /// Replaces all occurrences of a search string from the end of the text.
     /// </summary>
-    /// <param name = "s"></param>
-    /// <param name = "forWhat"></param>
-    /// <returns></returns>
-    public static string ReplaceWhitespaces(string text, string forWhat)
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <returns>The text with replacements applied from end to start.</returns>
+    public static string ReplaceFromEnd(string text, string replacement, string what)
     {
-        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
-        foreach (var value in whitespaceChar.whiteSpaceChars)
-            text = text.Replace(value.ToString(), forWhat);
+        var occurrences = SH.ReturnOccurencesOfString(text, what);
+        for (var i = occurrences.Count - 1; i >= 0; i--)
+            text = ReplaceByIndex(text, replacement, occurrences[i], what.Length);
         return text;
     }
 
-    public static string ReplaceWhiteSpacesAndTrim(string parameter)
+    /// <summary>
+    /// Replaces all whitespace characters in the text with the specified replacement.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace whitespace characters with.</param>
+    /// <returns>The text with all whitespace characters replaced.</returns>
+    public static string ReplaceWhitespaces(string text, string replacement)
     {
-        return ReplaceWhiteSpaces(parameter).Trim();
-    }
-
-    public static string ReplaceWhiteSpacesWithoutSpaces(string parameter, string replaceWith)
-    {
-        return ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(parameter, replaceWith);
+        WhitespaceCharService whitespaceCharService = new WhitespaceCharService();
+        foreach (var character in whitespaceCharService.WhiteSpaceChars)
+            text = text.Replace(character.ToString(), replacement);
+        return text;
     }
 
     /// <summary>
-    ///     Replace result,n,t with A2
+    /// Replaces whitespace characters in the text and trims the result.
     /// </summary>
-    /// <param name = "p"></param>
-    /// <param name = "replaceWith"></param>
-    /// <returns></returns>
-    public static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string parameter, string replaceWith)
+    /// <param name="text">The text to process.</param>
+    /// <returns>The text with whitespace characters replaced and trimmed.</returns>
+    public static string ReplaceWhiteSpacesAndTrim(string text)
     {
-        return parameter.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
+        return ReplaceWhiteSpaces(text).Trim();
     }
 
-    public static string ReplaceVariables(char parameter, char k, string innerHtml, List<List<string>> _dataBinding, int actualRow)
+    /// <summary>
+    /// Replaces whitespace characters (excluding spaces) with the specified replacement.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace whitespace characters with.</param>
+    /// <returns>The text with whitespace characters (except spaces) replaced.</returns>
+    public static string ReplaceWhiteSpacesWithoutSpaces(string text, string replacement)
     {
-        var sbNepridano = new StringBuilder();
-        var sbPridano = new StringBuilder();
-        var inVariable = false;
+        return ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(text, replacement);
+    }
+
+    /// <summary>
+    /// Replaces carriage return, newline, and tab characters with the specified replacement.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace whitespace characters with.</param>
+    /// <returns>The text with carriage return, newline, and tab characters replaced.</returns>
+    public static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string text, string replacement)
+    {
+        return text.Replace("\r", replacement).Replace("\n", replacement).Replace("\t", replacement);
+    }
+
+    /// <summary>
+    /// Replaces template variables in HTML content with values from a data binding table.
+    /// </summary>
+    /// <param name="openChar">The character that opens a variable reference.</param>
+    /// <param name="closeChar">The character that closes a variable reference.</param>
+    /// <param name="innerHtml">The HTML content containing variable references.</param>
+    /// <param name="dataBinding">The data binding table with variable values.</param>
+    /// <param name="actualRow">The row index to use for variable values.</param>
+    /// <returns>The HTML content with variables replaced by their values.</returns>
+    public static string ReplaceVariables(char openChar, char closeChar, string innerHtml, List<List<string>> dataBinding, int actualRow)
+    {
+        var unparsedBuilder = new StringBuilder();
+        var parsedBuilder = new StringBuilder();
+        var isInVariable = false;
         if (innerHtml != null)
-            foreach (var item in innerHtml)
-                if (item == parameter)
+            foreach (var character in innerHtml)
+                if (character == openChar)
                 {
-                    inVariable = true;
+                    isInVariable = true;
                 }
-                else if (item == k)
+                else if (character == closeChar)
                 {
-                    if (inVariable)
-                        inVariable = false;
-                    var nt = 0;
-                    if (int.TryParse(sbNepridano.ToString(), out nt))
+                    if (isInVariable)
+                        isInVariable = false;
+                    var parsedIndex = 0;
+                    if (int.TryParse(unparsedBuilder.ToString(), out parsedIndex))
                     {
-                        // Zde přidat nahrazenou proměnnou
-                        var value = _dataBinding[nt][actualRow];
-                        sbPridano.Append(value);
+                        var cellValue = dataBinding[parsedIndex][actualRow];
+                        parsedBuilder.Append(cellValue);
                     }
                     else
                     {
-                        sbPridano.Append(parameter + sbNepridano.ToString() + k);
+                        parsedBuilder.Append(openChar + unparsedBuilder.ToString() + closeChar);
                     }
 
-                    sbNepridano.Clear();
+                    unparsedBuilder.Clear();
                 }
-                else if (inVariable)
+                else if (isInVariable)
                 {
-                    sbNepridano.Append(item);
+                    unparsedBuilder.Append(character);
                 }
                 else
                 {
-                    sbPridano.Append(item);
+                    parsedBuilder.Append(character);
                 }
 
-        return sbPridano.ToString();
+        return parsedBuilder.ToString();
     }
 
-    public static string ReplaceByIndex(string text, string zaCo, int value, int length)
+    /// <summary>
+    /// Replaces a portion of text at a specific index with the specified replacement.
+    /// </summary>
+    /// <param name="text">The text to modify.</param>
+    /// <param name="replacement">The string to insert.</param>
+    /// <param name="index">The starting index of the portion to replace.</param>
+    /// <param name="length">The length of the portion to replace.</param>
+    /// <returns>The modified text.</returns>
+    public static string ReplaceByIndex(string text, string replacement, int index, int length)
     {
-        text = text.Remove(value, length);
-        if (zaCo != string.Empty)
-            text = text.Insert(value, zaCo);
-        return text;
-    }
-
-    public static StringBuilder ReplaceByIndex(StringBuilder text, string zaCo, int value, int length)
-    {
-        text = text.Remove(value, length);
-        if (zaCo != string.Empty)
-            text = text.Insert(value, zaCo);
+        text = text.Remove(index, length);
+        if (replacement != string.Empty)
+            text = text.Insert(index, replacement);
         return text;
     }
 
     /// <summary>
-    ///     Overload is without bool pairLines
+    /// Replaces a portion of a StringBuilder at a specific index with the specified replacement.
     /// </summary>
-    /// <param name = "vstup"></param>
-    /// <param name = "zaCo"></param>
-    /// <param name = "co"></param>
-    /// <param name = "pairLines"></param>
-    public static string ReplaceAll2(string vstup, string zaCo, string co, bool pairLines)
+    /// <param name="builder">The StringBuilder to modify.</param>
+    /// <param name="replacement">The string to insert.</param>
+    /// <param name="index">The starting index of the portion to replace.</param>
+    /// <param name="length">The length of the portion to replace.</param>
+    /// <returns>The modified StringBuilder.</returns>
+    public static StringBuilder ReplaceByIndex(StringBuilder builder, string replacement, int index, int length)
     {
-        if (pairLines)
-        {
-            var from2 = SHSplit.Split(co, Environment.NewLine);
-            var to2 = SHSplit.Split(zaCo, Environment.NewLine);
-            ThrowEx.DifferentCountInLists("from2", from2, "to2", to2);
-            for (var i = 0; i < from2.Count; i++)
-                vstup = ReplaceAll2(vstup, to2[i], from2[i]);
-            return vstup;
-        }
-
-        return ReplaceAll2(vstup, zaCo, co);
+        builder = builder.Remove(index, length);
+        if (replacement != string.Empty)
+            builder = builder.Insert(index, replacement);
+        return builder;
     }
 
-    public static StringBuilder ReplaceAllSb(StringBuilder stringBuilder, string zaCo, params string[] co)
+    /// <summary>
+    /// Replaces all occurrences of a search string with a replacement, optionally treating input as paired lines.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="isPairLines">Whether to treat input as paired lines for replacement.</param>
+    /// <returns>The text with replacements applied.</returns>
+    public static string ReplaceAll2(string text, string replacement, string what, bool isPairLines)
     {
-        foreach (var oldValue in co)
+        if (isPairLines)
         {
-            if (oldValue == zaCo)
+            var fromList = SHSplit.Split(what, Environment.NewLine);
+            var toList = SHSplit.Split(replacement, Environment.NewLine);
+            ThrowEx.DifferentCountInLists("fromList", fromList, "toList", toList);
+            for (var i = 0; i < fromList.Count; i++)
+                text = ReplaceAll2(text, toList[i], fromList[i]);
+            return text;
+        }
+
+        return ReplaceAll2(text, replacement, what);
+    }
+
+    /// <summary>
+    /// Replaces all occurrences of multiple search strings in a StringBuilder with a single replacement.
+    /// </summary>
+    /// <param name="builder">The StringBuilder to modify.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="searchValues">The strings to search for and replace.</param>
+    /// <returns>The modified StringBuilder.</returns>
+    public static StringBuilder ReplaceAllSb(StringBuilder builder, string replacement, params string[] searchValues)
+    {
+        foreach (var oldValue in searchValues)
+        {
+            if (oldValue == replacement)
                 continue;
-            stringBuilder = stringBuilder.Replace(oldValue, zaCo);
+            builder = builder.Replace(oldValue, replacement);
         }
 
-        return stringBuilder;
+        return builder;
     }
 
-    public static string ReplaceMany(string input, string fromTo, bool removeEndingPairCharsWhenDontHaveStarting = true)
+    /// <summary>
+    /// Replaces content in the input text using a multiline mapping string with arrow notation.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="mappingText">The mapping text with lines in format "from->to".</param>
+    /// <param name="isRemovingEndingPairCharsWhenDontHaveStarting">Whether to remove unmatched ending pair characters.</param>
+    /// <returns>The text with all mapped replacements applied.</returns>
+    public static string ReplaceMany(string text, string mappingText, bool isRemovingEndingPairCharsWhenDontHaveStarting = true)
     {
-        var from = new StringBuilder();
-        var to = new StringBuilder();
-        var list = SHGetLines.GetLines(fromTo);
-        list = list.Where(d => d.Trim() != string.Empty).ToList();
+        var fromBuilder = new StringBuilder();
+        var toBuilder = new StringBuilder();
+        var lines = SHGetLines.GetLines(mappingText);
+        lines = lines.Where(line => line.Trim() != string.Empty).ToList();
         var delimiter = "->";
         var replaceForEmpty = new List<string>();
-        foreach (var mappingLine in list)
+        foreach (var mappingLine in lines)
         {
-            // Must be split, not splitNone
-            // 'ReplaceInAllFiles:  Different count elements in collection from2 - 4 vs. to2 - 3'
-            var parameter = SHSplit.Split(mappingLine, delimiter);
-            if (parameter.Count == 1)
+            var parts = SHSplit.Split(mappingLine, delimiter);
+            if (parts.Count == 1)
                 if (mappingLine.EndsWith(delimiter))
                 {
-                    replaceForEmpty.Add(parameter[0]);
+                    replaceForEmpty.Add(parts[0]);
                     continue;
-                //parameter.Add(string.Empty);
                 }
 
-            //parameter.Insert(0, string.Empty);
-            from.AppendLine(parameter[0]);
-            to.AppendLine(parameter[1]);
+            fromBuilder.AppendLine(parts[0]);
+            toBuilder.AppendLine(parts[1]);
         }
 
-        var vr = ReplaceAll2(input, to.ToString(), from.ToString(), true);
+        var result = ReplaceAll2(text, toBuilder.ToString(), fromBuilder.ToString(), true);
         foreach (var oldValue in replaceForEmpty)
-            vr = vr.Replace(oldValue, string.Empty);
-        if (removeEndingPairCharsWhenDontHaveStarting)
-            vr = SH.RemoveEndingPairCharsWhenDontHaveStarting(vr, "{", "}");
-        return vr;
+            result = result.Replace(oldValue, string.Empty);
+        if (isRemovingEndingPairCharsWhenDontHaveStarting)
+            result = SH.RemoveEndingPairCharsWhenDontHaveStarting(result, "{", "}");
+        return result;
     }
 
     /// <summary>
-    ///     Method is useless
-    ///     ReplaceMany firstly split into two strings
-    ///     Better is call ReplaceAll2(input, to.ToString(), from.ToString(), true);
+    /// Replaces all whitespace characters with a space character.
     /// </summary>
-    /// <param name = "from"></param>
-    /// <param name = "to"></param>
-    /// <returns></returns>
-     //public static string PrepareForReplaceMany(List<string> from, List<string> to)
-    //{
-    //    return null;
-    //}
-    public static string ReplaceAllWhitecharsForSpace(string count)
+    /// <param name="text">The text to process.</param>
+    /// <returns>The text with all whitespace characters replaced by spaces.</returns>
+    public static string ReplaceAllWhitecharsForSpace(string text)
     {
-        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
-        foreach (var value in whitespaceChar.whiteSpaceChars)
-            if (value != ' ')
-                count = count.Replace(value, ' ');
-        return count;
+        WhitespaceCharService whitespaceCharService = new WhitespaceCharService();
+        foreach (var character in whitespaceCharService.WhiteSpaceChars)
+            if (character != ' ')
+                text = text.Replace(character, ' ');
+        return text;
     }
 }

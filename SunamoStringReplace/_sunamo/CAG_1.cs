@@ -1,53 +1,63 @@
 namespace SunamoStringReplace._sunamo;
 
+/// <summary>
+/// Internal collection helper class providing generic collection algorithms.
+/// </summary>
 internal class CAG
 {
-    internal static List<FromToStringReplace> EqualRanges<T>(List<T> contentOneSpace, List<T> r)
+    /// <summary>
+    /// Finds contiguous ranges where elements in the content list match the pattern list.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the lists.</typeparam>
+    /// <param name="contentList">The content list to search in.</param>
+    /// <param name="patternList">The pattern list to match against.</param>
+    /// <returns>A list of ranges where the pattern was found in the content.</returns>
+    internal static List<FromToStringReplace> EqualRanges<T>(List<T> contentList, List<T> patternList)
     {
         var result = new List<FromToStringReplace>();
-        int? dx = null;
-        var r_first = r[0];
+        int? matchIndex = null;
+        var firstPatternElement = patternList[0];
         var startAt = 0;
-        var valueToCompare = 0;
-        for (var i = 0; i < contentOneSpace.Count; i++)
+        var comparisonOffset = 0;
+        for (var i = 0; i < contentList.Count; i++)
         {
-            var _contentOneSpace = contentOneSpace[i];
-            if (!dx.HasValue)
+            var contentElement = contentList[i];
+            if (!matchIndex.HasValue)
             {
-                if (EqualityComparer<T>.Default.Equals(_contentOneSpace, r_first))
+                if (EqualityComparer<T>.Default.Equals(contentElement, firstPatternElement))
                 {
-                    dx = i + 1; // +2;
+                    matchIndex = i + 1;
                     startAt = i;
                 }
             }
             else
             {
-                valueToCompare = dx.Value - startAt;
-                if (r.Count > valueToCompare)
+                comparisonOffset = matchIndex.Value - startAt;
+                if (patternList.Count > comparisonOffset)
                 {
-                    if (EqualityComparer<T>.Default.Equals(_contentOneSpace, r[valueToCompare]))
+                    if (EqualityComparer<T>.Default.Equals(contentElement, patternList[comparisonOffset]))
                     {
-                        dx++;
+                        matchIndex++;
                     }
                     else
                     {
-                        dx = null;
+                        matchIndex = null;
                         i--;
                     }
                 }
                 else
                 {
-                    var dx2 = (int)dx;
-                    result.Add(new FromToStringReplace(dx2 - r.Count + 1, dx2, FromToUseStringReplace.None));
-                    dx = null;
+                    var matchEnd = (int)matchIndex;
+                    result.Add(new FromToStringReplace(matchEnd - patternList.Count + 1, matchEnd, FromToUseStringReplace.None));
+                    matchIndex = null;
                 }
             }
         }
 
-        foreach (var item in result)
+        foreach (var range in result)
         {
-            item.from--;
-            item.to--;
+            range.From--;
+            range.To--;
         }
 
         return result;

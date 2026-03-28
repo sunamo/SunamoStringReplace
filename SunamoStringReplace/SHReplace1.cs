@@ -1,265 +1,317 @@
 namespace SunamoStringReplace;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Provides additional methods for replacing content within strings (partial class).
+/// </summary>
 public partial class SHReplace
 {
-    public static string ReplaceAllExceptPrefixed(string t, string to, string from, string fromCannotBePrefixed)
+    /// <summary>
+    /// Replaces all occurrences of a search string except those prefixed with a specific string.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="forbiddenPrefix">The prefix that prevents replacement when found before the search string.</param>
+    /// <returns>The text with non-prefixed occurrences replaced.</returns>
+    public static string ReplaceAllExceptPrefixed(string text, string replacement, string what, string forbiddenPrefix)
     {
-        var occ = SH.ReturnOccurencesOfString(t, from);
-        for (var i = occ.Count - 1; i >= 0; i--)
+        var occurrences = SH.ReturnOccurencesOfString(text, what);
+        for (var i = occurrences.Count - 1; i >= 0; i--)
         {
-            var item = occ[i];
-            var begin = item - fromCannotBePrefixed.Length;
-            if (begin > -1)
+            var occurrence = occurrences[i];
+            var prefixStart = occurrence - forbiddenPrefix.Length;
+            if (prefixStart > -1)
             {
-                var prefix = t.Substring(begin, fromCannotBePrefixed.Length);
-                if (prefix != fromCannotBePrefixed)
-                    t = ReplaceByIndex(t, to, item, from.Length);
+                var prefix = text.Substring(prefixStart, forbiddenPrefix.Length);
+                if (prefix != forbiddenPrefix)
+                    text = ReplaceByIndex(text, replacement, occurrence, what.Length);
             }
-        }
-
-        return t;
-    }
-
-    public static string ReplaceVariables(string innerHtml, List<List<string>> _dataBinding, int actualRow)
-    {
-        return ReplaceVariables('{', '}', innerHtml, _dataBinding, actualRow);
-    }
-
-    public static string ReplaceAllDnArgs(string input, string v1, string v2)
-    {
-        return ReplaceAll(input, v2, v1);
-    }
-
-    /// <summary>
-    ///     Stejná jako metoda ReplaceAll, ale bere si do A3 pouze jediný parametr, nikoliv jejich pole
-    /// </summary>
-    /// <param name = "vstup"></param>
-    /// <param name = "zaCo"></param>
-    /// <param name = "co"></param>
-    public static string ReplaceAll2(string vstup, string zaCo, string co)
-    {
-        return vstup.Replace(co, zaCo);
-    }
-
-    /// <summary>
-    ///     Protože jsem zapomínal na to že jsem ReplaceAll nahradil za ReplaceAllArray dávám tu zpět i tento starý název,
-    ///     dokud zase nebude někomu vadit
-    /// </summary>
-    /// <param name = "vstup"></param>
-    /// <param name = "zaCo"></param>
-    /// <param name = "co"></param>
-    /// <returns></returns>
-    public static string ReplaceAll(string vstup, string zaCo, params string[] co)
-    {
-        return ReplaceAllArray(vstup, zaCo, co);
-    }
-
-    /// <summary>
-    ///     If you want to replace multiline content with various indent use ReplaceAllDoubleSpaceToSingle2 to every variable
-    ///     which you are passed
-    /// </summary>
-    /// <param name = "vstup"></param>
-    /// <param name = "zaCo"></param>
-    /// <param name = "co"></param>
-    public static string ReplaceAllArray(string vstup, string zaCo, params string[] co)
-    {
-        foreach (var item in co)
-            if (string.IsNullOrEmpty(item))
-                return vstup;
-        foreach (var item in co)
-            vstup = vstup.Replace(item, zaCo);
-        return vstup;
-    }
-
-    /// <summary>
-    ///     Use simple count# replace
-    ///     18-5-2023
-    ///     Nevím zda se tato metoda měnila. Ale měl jsem u jejího volání přehozené A2,3
-    ///     Zatím to nechám jak je.
-    /// </summary>
-    /// <param name = "t"></param>
-    /// <param name = "what"></param>
-    /// <param name = "forWhat"></param>
-    public static string Replace(string t, string what, string forWhat, bool a2CanBeAsA3 = false, bool throwExIfNotContains = false)
-    {
-        if (string.IsNullOrEmpty(forWhat))
-        {
-            throw new ArgumentException($"{what} is null or empty!");
-        }
-
-        if (!t.Contains(what) && throwExIfNotContains)
-        {
-            throw new Exception($"{t} not contains {what}");
-        }
-
-        if (what == forWhat)
-        {
-            if (a2CanBeAsA3)
-                return t;
-            ThrowEx.IsTheSame("what", "forWhat");
-        }
-
-        var result = t.Replace(what, forWhat);
-        return result;
-    }
-
-    public static string ReplaceLastOccurenceOfString(string text, string co, string čím)
-    {
-        var roz = SHSplit.Split(text, co);
-        if (roz.Count == 1)
-            return text.Replace(co, čím);
-        var stringBuilder = new StringBuilder();
-        for (var i = 0; i < roz.Count - 2; i++)
-            stringBuilder.Append(roz[i] + co);
-        stringBuilder.Append(roz[roz.Count - 2]);
-        stringBuilder.Append(čím);
-        stringBuilder.Append(roz[roz.Count - 1]);
-        return stringBuilder.ToString();
-    }
-
-    public static string ReplaceFirstOccurences(string value, string zaCo, string co, char maxToFirstChar)
-    {
-        var dexCo = value.IndexOf(co);
-        if (dexCo == -1)
-            return value;
-        var dex = value.IndexOf(maxToFirstChar);
-        if (dex == -1)
-            dex = value.Length;
-        if (dexCo > dex)
-            return value;
-        return ReplaceOnce(value, co, zaCo);
-    }
-
-    public static string ReplaceFirstOccurences(string text, string co, string zaCo)
-    {
-        var fi = text.IndexOf(co);
-        if (fi != -1)
-        {
-            text = ReplaceOnce(text, co, zaCo);
-            text = text.Insert(fi, zaCo);
         }
 
         return text;
     }
 
-    public static string ReplaceSecondAndNextOccurencesOfStringFrom(string vcem2, string co, string zaCo /*,
-        int overallCountOfA2*/)
+    /// <summary>
+    /// Replaces template variables enclosed in curly braces in HTML content.
+    /// </summary>
+    /// <param name="innerHtml">The HTML content containing variable references.</param>
+    /// <param name="dataBinding">The data binding table with variable values.</param>
+    /// <param name="actualRow">The row index to use for variable values.</param>
+    /// <returns>The HTML content with variables replaced by their values.</returns>
+    public static string ReplaceVariables(string innerHtml, List<List<string>> dataBinding, int actualRow)
     {
-        var result = new Regex(co);
-        //StringBuilder vcem = new StringBuilder(vcem2);
-        var dex = vcem2.IndexOf(co);
-        if (dex != -1)
-            return result.Replace(vcem2, zaCo, int.MaxValue, dex + co.Length);
-        //return vcem.Replace(co, zaCo, dex + co.Length , overallCountOfA2 - 1 ).ToString();
-        return vcem2;
+        return ReplaceVariables('{', '}', innerHtml, dataBinding, actualRow);
     }
 
     /// <summary>
-    ///     Working - see unit tests
-    ///     Split by all whitespaces - remove also newline
-    ///     ReplaceAllDoubleSpaceToSingle not working correctly while copy from webpage
-    ///     Split and join again
+    /// Replaces all occurrences using swapped argument order for convenience.
     /// </summary>
-    /// <param name = "text"></param>
-    public static string ReplaceAllDoubleSpaceToSingle2(string text, bool alsoHtml = false)
+    /// <param name="text">The text to process.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <returns>The text with replacements applied.</returns>
+    public static string ReplaceAllDnArgs(string text, string what, string replacement)
     {
-        if (alsoHtml)
+        return ReplaceAll(text, replacement, what);
+    }
+
+    /// <summary>
+    /// Replaces a single search string with a replacement string in the text.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <returns>The text with the replacement applied.</returns>
+    public static string ReplaceAll2(string text, string replacement, string what)
+    {
+        return text.Replace(what, replacement);
+    }
+
+    /// <summary>
+    /// Replaces all occurrences of multiple search strings with a single replacement.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="searchValues">The strings to search for and replace.</param>
+    /// <returns>The text with all replacements applied.</returns>
+    public static string ReplaceAll(string text, string replacement, params string[] searchValues)
+    {
+        return ReplaceAllArray(text, replacement, searchValues);
+    }
+
+    /// <summary>
+    /// Replaces all occurrences of multiple search strings with a single replacement.
+    /// If you want to replace multiline content with various indent use ReplaceAllDoubleSpaceToSingle2 to every variable
+    /// which you are passed.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="searchValues">The strings to search for and replace.</param>
+    /// <returns>The text with all replacements applied.</returns>
+    public static string ReplaceAllArray(string text, string replacement, params string[] searchValues)
+    {
+        foreach (var element in searchValues)
+            if (string.IsNullOrEmpty(element))
+                return text;
+        foreach (var element in searchValues)
+            text = text.Replace(element, replacement);
+        return text;
+    }
+
+    /// <summary>
+    /// Replaces a search string with a replacement string, with optional validation.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="isAllowingSameWhatAndReplacement">Whether to allow search and replacement strings to be the same.</param>
+    /// <param name="isThrowingExIfNotContains">Whether to throw an exception if the search string is not found.</param>
+    /// <returns>The text with the replacement applied.</returns>
+    public static string Replace(string text, string what, string replacement, bool isAllowingSameWhatAndReplacement = false, bool isThrowingExIfNotContains = false)
+    {
+        if (string.IsNullOrEmpty(replacement))
+        {
+            throw new ArgumentException($"{nameof(replacement)} is null or empty!");
+        }
+
+        if (!text.Contains(what) && isThrowingExIfNotContains)
+        {
+            throw new Exception($"{text} not contains {what}");
+        }
+
+        if (what == replacement)
+        {
+            if (isAllowingSameWhatAndReplacement)
+                return text;
+            ThrowEx.IsTheSame("what", "replacement");
+        }
+
+        var result = text.Replace(what, replacement);
+        return result;
+    }
+
+    /// <summary>
+    /// Replaces the last occurrence of a search string in the text.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <returns>The text with the last occurrence replaced.</returns>
+    public static string ReplaceLastOccurenceOfString(string text, string what, string replacement)
+    {
+        var parts = SHSplit.Split(text, what);
+        if (parts.Count == 1)
+            return text.Replace(what, replacement);
+        var resultBuilder = new StringBuilder();
+        for (var i = 0; i < parts.Count - 2; i++)
+            resultBuilder.Append(parts[i] + what);
+        resultBuilder.Append(parts[parts.Count - 2]);
+        resultBuilder.Append(replacement);
+        resultBuilder.Append(parts[parts.Count - 1]);
+        return resultBuilder.ToString();
+    }
+
+    /// <summary>
+    /// Replaces the first occurrence of a search string, only if it appears before a specified character.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="maxToFirstChar">The character that limits the search range.</param>
+    /// <returns>The text with the first occurrence replaced if within range.</returns>
+    public static string ReplaceFirstOccurences(string text, string replacement, string what, char maxToFirstChar)
+    {
+        var whatIndex = text.IndexOf(what);
+        if (whatIndex == -1)
+            return text;
+        var charIndex = text.IndexOf(maxToFirstChar);
+        if (charIndex == -1)
+            charIndex = text.Length;
+        if (whatIndex > charIndex)
+            return text;
+        return ReplaceOnce(text, what, replacement);
+    }
+
+    /// <summary>
+    /// Replaces the first occurrence of a search string in the text.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="what">The string to search for.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <returns>The text with the first occurrence replaced.</returns>
+    public static string ReplaceFirstOccurences(string text, string what, string replacement)
+    {
+        var firstIndex = text.IndexOf(what);
+        if (firstIndex != -1)
+        {
+            text = ReplaceOnce(text, what, replacement);
+            text = text.Insert(firstIndex, replacement);
+        }
+
+        return text;
+    }
+
+    /// <summary>
+    /// Replaces the second and subsequent occurrences of a pattern in the text.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="what">The regex pattern to search for.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <returns>The text with second and subsequent occurrences replaced.</returns>
+    public static string ReplaceSecondAndNextOccurencesOfStringFrom(string text, string what, string replacement)
+    {
+        var regex = new Regex(what);
+        var firstIndex = text.IndexOf(what);
+        if (firstIndex != -1)
+            return regex.Replace(text, replacement, int.MaxValue, firstIndex + what.Length);
+        return text;
+    }
+
+    /// <summary>
+    /// Replaces all double spaces by splitting on whitespace and rejoining with single spaces.
+    /// Works better than ReplaceAllDoubleSpaceToSingle when copying from webpages.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="isAlsoReplacingHtml">Whether to also replace HTML non-breaking spaces.</param>
+    /// <returns>The text with all multiple spaces normalized to single spaces.</returns>
+    public static string ReplaceAllDoubleSpaceToSingle2(string text, bool isAlsoReplacingHtml = false)
+    {
+        if (isAlsoReplacingHtml)
         {
             text = text.Replace(" &nbsp;", " ");
             text = text.Replace("&nbsp; ", " ");
             text = text.Replace("&nbsp;", " ");
         }
 
-        WhitespaceCharService whitespaceChar = new WhitespaceCharService();
-        var parameter = SHSplit.Split(text, whitespaceChar.whiteSpaceChars.ConvertAll(d => d.ToString()).ToArray());
-        return string.Join(" ", parameter);
-    }
-
-    public static string ReplaceWhiteSpacesExcludeSpaces(string parameter)
-    {
-        return parameter.Replace("\r", "").Replace("\n", "").Replace("\t", "");
-    }
-
-    public static string ReplaceAllCaseInsensitive(string vr, string zaCo, params string[] co)
-    {
-        foreach (var item in co)
-            if (zaCo.Contains(item))
-                throw new Exception("Nahrazovan\u00FD prvek " + item + " je prvkem j\u00EDm\u017E se nahrazuje  " + zaCo + ".");
-        for (var i = 0; i < co.Length; i++)
-            vr = Regex.Replace(vr, co[i], zaCo, RegexOptions.IgnoreCase);
-        return vr;
+        WhitespaceCharService whitespaceCharService = new WhitespaceCharService();
+        var parts = SHSplit.Split(text, whitespaceCharService.WhiteSpaceChars.ConvertAll(character => character.ToString()).ToArray());
+        return string.Join(" ", parts);
     }
 
     /// <summary>
-    ///     Replace every whitespace with empty string
+    /// Removes whitespace characters (carriage return, newline, tab) from the text, excluding spaces.
     /// </summary>
-    /// <param name = "replaceWith"></param>
-    public static string ReplaceWhiteSpaces(string replaceWith)
+    /// <param name="text">The text to process.</param>
+    /// <returns>The text with non-space whitespace characters removed.</returns>
+    public static string ReplaceWhiteSpacesExcludeSpaces(string text)
     {
-        return ReplaceWhiteSpaces(replaceWith, "");
+        return text.Replace("\r", "").Replace("\n", "").Replace("\t", "");
     }
 
     /// <summary>
-    ///     Replace all whitespaces except of space and then A1 with space
-    ///     In other words, in finale, replace every whitespace with space - A2 is for better customizing
-    ///     A2 can be also space
+    /// Replaces all occurrences of search strings in a case-insensitive manner.
     /// </summary>
-    /// <param name = "p"></param>
-    /// <param name = "replaceWith"></param>
-    public static string ReplaceWhiteSpaces(string parameter, string replaceWith)
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace with.</param>
+    /// <param name="searchValues">The strings to search for and replace.</param>
+    /// <returns>The text with case-insensitive replacements applied.</returns>
+    public static string ReplaceAllCaseInsensitive(string text, string replacement, params string[] searchValues)
     {
-        var replaced = ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(parameter, replaceWith);
-        return Replace(replaced, "", replaceWith, true);
+        foreach (var element in searchValues)
+            if (replacement.Contains(element))
+                throw new Exception("Replaced element " + element + " is part of replacement string " + replacement + ".");
+        for (var i = 0; i < searchValues.Length; i++)
+            text = Regex.Replace(text, searchValues[i], replacement, RegexOptions.IgnoreCase);
+        return text;
     }
 
     /// <summary>
-    ///     A2 a->b
-    ///     A3 ->
+    /// Replaces every whitespace character with an empty string.
     /// </summary>
-    /// <param name = "input"></param>
-    /// <param name = "v"></param>
-    /// <param name = "delimiter"></param>
-    /// <returns></returns>
-    public static string ReplaceManyFromString(string input, string value, string delimiter)
+    /// <param name="text">The text to process.</param>
+    /// <returns>The text with all whitespace characters removed.</returns>
+    public static string ReplaceWhiteSpaces(string text)
     {
-        var methodName = "ReplaceManyFromString";
-        var list = SHGetLines.GetLines(value);
-        foreach (var item in list)
+        return ReplaceWhiteSpaces(text, "");
+    }
+
+    /// <summary>
+    /// Replaces all whitespace characters except spaces first, then replaces the result with the specified replacement.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="replacement">The string to replace whitespace with.</param>
+    /// <returns>The text with whitespace characters replaced.</returns>
+    public static string ReplaceWhiteSpaces(string text, string replacement)
+    {
+        var replaced = ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(text, replacement);
+        return Replace(replaced, "", replacement, true);
+    }
+
+    /// <summary>
+    /// Replaces content in the text using a multiline mapping string with a custom delimiter.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="mappingText">The mapping text with lines containing from/to pairs separated by the delimiter.</param>
+    /// <param name="delimiter">The delimiter separating from and to values in each line.</param>
+    /// <returns>The text with all mapped replacements applied.</returns>
+    public static string ReplaceManyFromString(string text, string mappingText, string delimiter)
+    {
+        var lines = SHGetLines.GetLines(mappingText);
+        foreach (var line in lines)
         {
-            var parameter = SHSplit.Split(item, delimiter);
-            parameter = parameter.ConvertAll(d => d.Trim());
-            string from, to;
-            from = to = null;
-            if (parameter.Count > 0)
-                from = parameter[0];
+            var parts = SHSplit.Split(line, delimiter);
+            parts = parts.ConvertAll(element => element.Trim());
+            string fromValue, toValue;
+            fromValue = toValue = null!;
+            if (parts.Count > 0)
+                fromValue = parts[0];
             else
-                throw new Exception(item + " hasn't from");
-            if (parameter.Count > 1)
-                to = parameter[1];
+                throw new Exception(line + " hasn't from");
+            if (parts.Count > 1)
+                toValue = parts[1];
             else
-                throw new Exception(item + " hasn't to");
-            if (WildcardHelper.IsWildcard(item))
+                throw new Exception(line + " hasn't to");
+            if (WildcardHelper.IsWildcard(line))
             {
-                var wc = new Wildcard(from);
+                var wildcard = new Wildcard(fromValue);
                 ThrowEx.NotImplementedMethod();
-            //var occurences = wc.Matches(input);
-            //foreach (Match match in occurences)
-            //{
-            //    var result = match.Result();
-            //    var groups = match.Groups;
-            //    var captues = match.Captures;
-            //    var value = match.Value;
-            //}
             }
             else
             {
-                //Wildcard wildcard = new Wildcard();
-                input = ReplaceAll(input, to, from);
+                text = ReplaceAll(text, toValue, fromValue);
             }
         }
 
-        return input;
+        return text;
     }
 }

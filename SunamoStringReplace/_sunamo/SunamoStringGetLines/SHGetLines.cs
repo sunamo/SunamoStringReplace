@@ -1,46 +1,69 @@
 namespace SunamoStringReplace._sunamo.SunamoStringGetLines;
 
+/// <summary>
+/// Internal helper class for splitting text into lines.
+/// </summary>
 internal class SHGetLines
 {
-    internal static List<string> GetLines(string p)
+    /// <summary>
+    /// Splits text into individual lines, handling all common newline formats.
+    /// </summary>
+    /// <param name="text">The text to split into lines.</param>
+    /// <returns>A list of lines.</returns>
+    internal static List<string> GetLines(string text)
     {
-        var parts = p.Split(new[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
+        var parts = text.Split(new[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
         SplitByUnixNewline(parts);
         return parts;
     }
 
-    private static void SplitByUnixNewline(List<string> d)
+    /// <summary>
+    /// Further splits lines by individual Unix newline characters.
+    /// </summary>
+    /// <param name="lines">The list of lines to process.</param>
+    private static void SplitByUnixNewline(List<string> lines)
     {
-        SplitBy(d, "\r");
-        SplitBy(d, "\n");
+        SplitBy(lines, "\r");
+        SplitBy(lines, "\n");
     }
 
-    private static void SplitBy(List<string> d, string v)
+    /// <summary>
+    /// Splits lines that contain the specified delimiter into separate entries.
+    /// </summary>
+    /// <param name="lines">The list of lines to process.</param>
+    /// <param name="delimiter">The delimiter to split by.</param>
+    private static void SplitBy(List<string> lines, string delimiter)
     {
-        for (var i = d.Count - 1; i >= 0; i--)
+        for (var i = lines.Count - 1; i >= 0; i--)
         {
-            if (v == "\r")
+            if (delimiter == "\r")
             {
-                var rn = d[i].Split(new[] { "\r\n" }, StringSplitOptions.None);
-                var nr = d[i].Split(new[] { "\n\r" }, StringSplitOptions.None);
+                var carriageReturnNewline = lines[i].Split(new[] { "\r\n" }, StringSplitOptions.None);
+                var newlineCarriageReturn = lines[i].Split(new[] { "\n\r" }, StringSplitOptions.None);
 
-                if (rn.Length > 1)
+                if (carriageReturnNewline.Length > 1)
                     ThrowEx.Custom("cannot contain any \r\name, pass already split by this pattern");
-                else if (nr.Length > 1) ThrowEx.Custom("cannot contain any \n\r, pass already split by this pattern");
+                else if (newlineCarriageReturn.Length > 1) ThrowEx.Custom("cannot contain any \n\r, pass already split by this pattern");
             }
 
-            var name = d[i].Split(new[] { v }, StringSplitOptions.None);
+            var splitResult = lines[i].Split(new[] { delimiter }, StringSplitOptions.None);
 
-            if (name.Length > 1) InsertOnIndex(d, name.ToList(), i);
+            if (splitResult.Length > 1) InsertOnIndex(lines, splitResult.ToList(), i);
         }
     }
 
-    private static void InsertOnIndex(List<string> d, List<string> r, int i)
+    /// <summary>
+    /// Replaces a single element in the list with multiple elements from a split result.
+    /// </summary>
+    /// <param name="lines">The list to modify.</param>
+    /// <param name="splitResult">The split result to insert.</param>
+    /// <param name="index">The index of the element to replace.</param>
+    private static void InsertOnIndex(List<string> lines, List<string> splitResult, int index)
     {
-        r.Reverse();
+        splitResult.Reverse();
 
-        d.RemoveAt(i);
+        lines.RemoveAt(index);
 
-        foreach (var item in r) d.Insert(i, item);
+        foreach (var element in splitResult) lines.Insert(index, element);
     }
 }
