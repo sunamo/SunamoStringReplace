@@ -1,7 +1,16 @@
 namespace SunamoStringReplace._sunamo;
 
+/// <summary>
+/// Internal string helper class providing utility methods for string operations.
+/// </summary>
 internal class SH
 {
+    /// <summary>
+    /// Returns all occurrence indexes of a substring within the text.
+    /// </summary>
+    /// <param name="text">The text to search in.</param>
+    /// <param name="what">The substring to search for.</param>
+    /// <returns>A list of indexes where the substring occurs.</returns>
     internal static List<int> ReturnOccurencesOfString(string text, string what)
     {
         var results = new List<int>();
@@ -15,6 +24,14 @@ internal class SH
         return results;
     }
 
+    /// <summary>
+    /// Gets pairs of matching start and end indexes from two lists of bracket positions.
+    /// </summary>
+    /// <param name="leftOccurrences">Indexes of left bracket occurrences.</param>
+    /// <param name="rightOccurrences">Indexes of right bracket occurrences.</param>
+    /// <param name="unmatchedLeft">Unmatched left bracket indexes.</param>
+    /// <param name="unmatchedRight">Unmatched right bracket indexes.</param>
+    /// <returns>A list of matched start-end index pairs.</returns>
     internal static List<Tuple<int, int>> GetPairsStartAndEnd(List<int> leftOccurrences, List<int> rightOccurrences, ref List<int> unmatchedLeft,
         ref List<int> unmatchedRight)
     {
@@ -102,6 +119,13 @@ internal class SH
         return result;
     }
 
+    /// <summary>
+    /// Removes unmatched ending pair characters (e.g. closing brackets) that have no corresponding opening character.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    /// <param name="openChar">The opening pair character.</param>
+    /// <param name="closeChar">The closing pair character.</param>
+    /// <returns>The text with unmatched pair characters removed.</returns>
     internal static string RemoveEndingPairCharsWhenDontHaveStarting(string text, string openChar, string closeChar)
     {
         var resultBuilder = new StringBuilder(text);

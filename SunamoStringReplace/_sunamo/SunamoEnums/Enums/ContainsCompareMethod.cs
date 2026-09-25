@@ -1,11 +1,16 @@
 namespace SunamoStringReplace._sunamo.SunamoEnums.Enums;
 
-// Used in SunamoCollectionsGenericStore and SunamoCollections.
+/// <summary>
+/// Specifies the comparison method used for contains operations.
+/// Used in SunamoCollectionsGenericStore and SunamoCollections.
+/// </summary>
 internal enum ContainsCompareMethod
 {
     WholeInput,
     SplitToWords,
 
-    // split to words and check for ! at [0]
+    /// <summary>
+    ///     split to words and check for ! at [0]
+    /// </summary>
     Negations
 }
