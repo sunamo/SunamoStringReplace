@@ -104,7 +104,7 @@ public partial class SHReplace
     /// <returns>The text with all whitespace characters replaced.</returns>
     public static string ReplaceWhitespaces(string text, string replacement)
     {
-        WhitespaceCharService whitespaceCharService = new WhitespaceCharService();
+        WhitespaceCharService whitespaceCharService = new();
         foreach (var character in whitespaceCharService.WhiteSpaceChars)
             text = text.Replace(character.ToString(), replacement);
         return text;
@@ -309,7 +309,7 @@ public partial class SHReplace
     /// <returns>The text with all whitespace characters replaced by spaces.</returns>
     public static string ReplaceAllWhitecharsForSpace(string text)
     {
-        WhitespaceCharService whitespaceCharService = new WhitespaceCharService();
+        WhitespaceCharService whitespaceCharService = new();
         foreach (var character in whitespaceCharService.WhiteSpaceChars)
             if (character != ' ')
                 text = text.Replace(character, ' ');
