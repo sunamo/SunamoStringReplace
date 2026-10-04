@@ -1,5 +1,10 @@
 # SunamoStringReplace
 
+## Short description
+
+Knihovna s metodami pro nahrazování textu uvnitř řetězců včetně pokročilejších variant. Součást sbírky pinp s testy a Runnerem.
+
+
 Method for replacing inside strings
 
 ## Overview
