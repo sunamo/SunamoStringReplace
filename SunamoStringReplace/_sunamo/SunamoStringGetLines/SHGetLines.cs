@@ -1,15 +1,7 @@
 namespace SunamoStringReplace._sunamo.SunamoStringGetLines;
 
-/// <summary>
-/// Internal helper class for splitting text into lines.
-/// </summary>
 internal class SHGetLines
 {
-    /// <summary>
-    /// Splits text into individual lines, handling all common newline formats.
-    /// </summary>
-    /// <param name="text">The text to split into lines.</param>
-    /// <returns>A list of lines.</returns>
     internal static List<string> GetLines(string text)
     {
         var parts = text.Split(new[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
@@ -17,21 +9,12 @@ internal class SHGetLines
         return parts;
     }
 
-    /// <summary>
-    /// Further splits lines by individual Unix newline characters.
-    /// </summary>
-    /// <param name="lines">The list of lines to process.</param>
     private static void SplitByUnixNewline(List<string> lines)
     {
         SplitBy(lines, "\r");
         SplitBy(lines, "\n");
     }
 
-    /// <summary>
-    /// Splits lines that contain the specified delimiter into separate entries.
-    /// </summary>
-    /// <param name="lines">The list of lines to process.</param>
-    /// <param name="delimiter">The delimiter to split by.</param>
     private static void SplitBy(List<string> lines, string delimiter)
     {
         for (var i = lines.Count - 1; i >= 0; i--)
@@ -52,12 +35,6 @@ internal class SHGetLines
         }
     }
 
-    /// <summary>
-    /// Replaces a single element in the list with multiple elements from a split result.
-    /// </summary>
-    /// <param name="lines">The list to modify.</param>
-    /// <param name="splitResult">The split result to insert.</param>
-    /// <param name="index">The index of the element to replace.</param>
     private static void InsertOnIndex(List<string> lines, List<string> splitResult, int index)
     {
         splitResult.Reverse();
