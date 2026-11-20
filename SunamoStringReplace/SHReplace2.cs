@@ -2,6 +2,13 @@ namespace SunamoStringReplace;
 
 public partial class SHReplace
 {
+    /// <summary>
+    /// Replace first line.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="what">The what.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <returns>The replace first line result.</returns>
     public static string ReplaceFirstLine(string text, string what, string replacement)
     {
         var lines = SHGetLines.GetLines(text);
@@ -12,6 +19,13 @@ public partial class SHReplace
         return string.Join("\n", lines);
     }
 
+    /// <summary>
+    /// Replace all 4.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <param name="what">The what.</param>
+    /// <returns>The replace all 4 result.</returns>
     public static string ReplaceAll4(string text, string replacement, string what)
     {
         while (text.Contains(what))
@@ -19,6 +33,14 @@ public partial class SHReplace
         return text;
     }
 
+    /// <summary>
+    /// Replace all 3.
+    /// </summary>
+    /// <param name="replaceFrom">The replace from.</param>
+    /// <param name="replaceTo">The replace to.</param>
+    /// <param name="isMultilineWithVariousIndent">The is multiline with various indent.</param>
+    /// <param name="content">The content.</param>
+    /// <returns>The replace all 3 result.</returns>
     public static string ReplaceAll3(IList<string> replaceFrom, IList<string> replaceTo, bool isMultilineWithVariousIndent, string content)
     {
         WhitespaceCharService whitespaceCharService = new WhitespaceCharService();
@@ -54,6 +76,14 @@ public partial class SHReplace
         return content;
     }
 
+    /// <summary>
+    /// Replace with index.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="what">The what.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <param name="foundIndex">The found index.</param>
+    /// <returns>The replace with index result.</returns>
     public static string ReplaceWithIndex(string text, string what, string replacement, ref int foundIndex)
     {
         if (foundIndex == -1)
@@ -69,6 +99,14 @@ public partial class SHReplace
         return text;
     }
 
+    /// <summary>
+    /// Replace typed whitespaces for normal.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="isReplacingQuotes">The is replacing quotes.</param>
+    /// <param name="isReplacingT24">The is replacing t 24.</param>
+    /// <param name="isReplacingBackslash">The is replacing backslash.</param>
+    /// <returns>The replace typed whitespaces for normal result.</returns>
     public static string ReplaceTypedWhitespacesForNormal(string text, bool isReplacingQuotes, bool isReplacingT24, bool isReplacingBackslash)
     {
         stringBuilder.Clear();
@@ -78,6 +116,14 @@ public partial class SHReplace
         return ReplaceTypedWhitespacesForNormal(stringBuilder, isReplacingQuotes, isReplacingT24, isReplacingBackslash).ToString();
     }
 
+    /// <summary>
+    /// Replace typed whitespaces for normal.
+    /// </summary>
+    /// <param name="builder">The builder.</param>
+    /// <param name="isReplacingQuotes">The is replacing quotes.</param>
+    /// <param name="isReplacingT24">The is replacing t 24.</param>
+    /// <param name="isReplacingBackslash">The is replacing backslash.</param>
+    /// <returns>The replace typed whitespaces for normal result.</returns>
     public static StringBuilder ReplaceTypedWhitespacesForNormal(StringBuilder builder, bool isReplacingQuotes, bool isReplacingT24, bool isReplacingBackslash)
     {
         if (isReplacingT24)
@@ -92,6 +138,14 @@ public partial class SHReplace
         return builder;
     }
 
+    /// <summary>
+    /// Replace in line.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="what">The what.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <param name="isCheckingForMoreOccurences">The is checking for more occurences.</param>
+    /// <returns>The replace in line result.</returns>
     public static string ReplaceInLine(string text, string what, string replacement, bool isCheckingForMoreOccurences)
     {
         var list = new List<string>(new[] { text });
@@ -99,6 +153,14 @@ public partial class SHReplace
         return list[0];
     }
 
+    /// <summary>
+    /// Replace in line.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <param name="lineFromOne">The line from one.</param>
+    /// <param name="what">The what.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <param name="isCheckingForMoreOccurences">The is checking for more occurences.</param>
     public static void ReplaceInLine(List<string> lines, int lineFromOne, string what, string replacement, bool isCheckingForMoreOccurences)
     {
         if (isCheckingForMoreOccurences)
@@ -126,6 +188,13 @@ public partial class SHReplace
         }
     }
 
+    /// <summary>
+    /// Replace once.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="what">The what.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <returns>The replace once result.</returns>
     public static string ReplaceOnce(string text, string what, string replacement)
     {
         if (what == "")
